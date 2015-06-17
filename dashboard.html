@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" class = "no-js">
+	<head>
+		 <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>My Classroom</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        
+		
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" type="text/css" href="css/normalize.css">
+		
+		<link rel="stylesheet" type="text/css" href="css/media-query.css">
+		<!-- Magnific Popup core CSS file -->
+		<link rel="stylesheet" href="css/magnific-popup.css"> 
+		
+	
+		<!-- Latest compiled and minified JavaScript -->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+		<script src="js/sidr/jquery.sidr.min.js"></script>
+	
+		<script src="js/jquery.magnific-popup.js"></script>
+		 
+		 <link rel="stylesheet" type="text/css" href="css/dstyle.css">
+		 <script>
+	$(window).load(function() {
+		
+		$(".se-pre-con").fadeOut("slow");
+	    });
+
+		 </script>
+		 		
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+ 
+<script>
+Parse.initialize("tTqAhR73SE4NWFhulYX4IjQSDH2TkuTblujAbvOK", "RA3UNkDyxXN6r9b4VmJ8x9QAGbnkV1yedHL5wC8j");
+Parse.User.enableRevocableSession();
+// Parse.Session.isCurrentSessionRevocable();
+ </script>
+
+<script type="text/javascript" src="js/load1.js"></script>
+
+		<style>		
+		
+		
+		
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url(icons/knit_logo_blue.gif) center no-repeat #fff;
+}
+
+.sending{
+width:100px;
+height:50px;
+margin-right:20px;
+float:right;
+
+background: url(icons/knit_loader8.gif) center  no-repeat #fff;
+}
+
+#alerts{
+
+
+
+position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+display:none;
+background:#353839;
+opacity:0.973333;
+}
+
+#inner_alerts{
+position:absolute;
+width:65%;
+
+margin-top:10%;
+margin-left:15%;
+
+background-color:white;
+
+}
+@media screen and (min-width: 600px) and  (max-width: 1200px) {
+#next{
+width:60px;
+}
+#back{
+width:60px;
+}
+}
+
+.icon-remove{
+padding-left:36px;
+}
+
+.icon-cog{
+padding-left:5px;
+}
+
+</style>
+<style>
+
+</style>
+	</head>
+	<body>		
+<div class="se-pre-con" id="se-pre-con"></div>
+	<div class="se-pre-con" id="alerts">
+		<div id="inner_alerts">
+			<div id="alert_title">
+				<img id="add_alert_info" src="" width="25px" />
+				<div id="alert_title_text"></div>
+			</div>
+			<div id="alert_details"></div>
+			<input class="input-alert"id="enter_class_name" type="text" placeholder="Create Class"style=" font: 20px lato;border:1px solid black;"  size ="26"name="new_c_name">
+			<div id="back"></div>
+			<div id="next"></div>
+		</div>
+	</div>
+	
+	
+	<div style="position:fixed;width:100%;z-index:999">
+		<nav class="navbar">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="#">
+		        <a href="dashboard.html"><span><img class="brand-logo" src="icons/logo.png"></span></a>
+		      </a>
+		    </div>		  
+		    <div id="dd" class="wrapper-dropdown-5" tabindex="1"  onclick="show_profile()" >
+				<div id="teacher_name"></div>
+				<div  id="dropdown"class="dropdown" >
+				<div id="settings_wrapper">
+					<div class="profile-photo" id="profile-photo" ><img id="profile_pic_img_dd" src="" />
+					</div>
+					<div><a href="#" style="margin-left:-15px" data-toggle="modal" data-target="#myModal2"><i class="icon-user"></i><center>Profile</a></div>
+					<div><a onclick="settings()" ><i class="icon-cog" ></i>Reset Password</a></div>
+					<div><a onclick="logout()" ><i class="icon-remove"></i>Log out</a></div>
+				</div>
+				</div>
+			</div>
+		  </div>
+		</nav>
+	</div>	
+		<div id="page-container" class="container-fluid">
+			<div class="page-left-container  ">
+				<div class="wrapper">
+			
+				<div class="left-header">
+					
+					<div><img src="icons/classroom.png"><span>Classrooms</span></div>
+				</div>
+				<div id="class_room" class="class-list-header" onclick="load_again()">My Feeds</div>
+				<div id="class-list"  style="overflow:auto;direction:rtl;">
+
+				</div>
+				<a id="create-class-btn" href="#create-class-modal">
+				<div>
+					<div onclick="create_class()"><img src="icons/plus.png"><span>Create Class</span></div>
+				</div>
+				</a>
+				</div>
+			</div>
+	
+			<div class="page-center-container col-xs-12 col-sm-12 col-md-8 col-lg-8" >
+				<div id="form-wrapper" class="col-xs-12 col-sm-12">
+					<!--<input type="text" class="add-class col-xs-12 col-sm-12" placeholder="+Add Classes" ></input>-->
+					<textarea onfocus="highlight_send()" onfocusout="highlight_back()" class="add-text col-xs-12 col-sm-12 "  id="send_message" >
+						
+					</textarea>
+					<div id="button-area" class="col-xs-12 col-sm-12">
+					<div class="upload" onmouseout="back_attach()"onmouseover="highlight_attach()"><input type="file"accept="image/*" onChange="load_image(this.id,this.value,this)" class="upload1" name="attachment" id="attachment" style="float:left;" ></input>
+					</div><img id="attachment_name" src="#" alt="your image" />
+						
+						<input type="button" id="send_button" class="knit-btn2" onmouseout ="border_back()" onmouseover ="border_hover()"style="float:right;margin-right:20px;"value="Send"onclick="send_with_picture();"></input>
+			            <div class="sending"></div>
+					</div>
+				</div>
+			
+				
+					<!--<DIV id="img_container"></div>-->
+					<div id="class-feed-container" class="col-xs-12 col-sm-12" >
+					
+			
+					<div class="class-feed " id="should-be-hidden">
+						<div class="date-separator col-xs-12 col-sm-12">
+							<div class="hr">&nbsp;</div>
+							<div class="feed-date color-gray">March 2, 2015</div>
+						</div>
+						<div class="class-name" class="col-xs-12 col-sm-12">Your Class Name</div>
+						<div class="feed-content">
+							This is Where your messages will appear
+							(You found where your messages go.)
+						</div>
+						<div class="feed-image" >
+					
+							<!--<a class="image-popup-no-margins" onclick="show_this(this)">
+							<img   id="load-feed-image" src="icons/logo.png">
+							</a>-->
+						<a  href="#" class="showPopup" ><img onclick="show_img(this)" id="load-feed-image" src="icons/logo.png"/></a>
+							 
+						</div>
+						<div class="feed-actions">
+							<div class="feed-footer-left">						
+							<div class="like-btn inline-content">
+								<img src="icons/like_new.png">
+								<div class="like-btn-count inline-content feed-footer-data feed-footer-number">12</div>
+							</div>
+							<div class="question-btn inline-content">
+								<img src="icons/question_new.png">
+								<div class="question-btn-count inline-content feed-footer-data feed-footer-number">17</div>
+							</div>
+							</div>
+							<div class="seen-by inline-content feed-footer-data feed-footer-center color-gray">
+								<img src="icons/eye.png"/> <span class="seen-by-count"> 36</span>
+							</div>
+							<div class="feed-time feed-footer-data feed-footer-right color-gray">
+								6:30 PM
+							</div>
+						</div>
+					</div>
+					
+					
+				</div><br>
+				<center><button type="submit" id="showmore" onclick="showold()" > Show More</button></center>
+				
+			</div>
+			
+			<div  class="page-right-container " >
+				<div class="wrapper" id="susbscriber-list-names" >
+				<div id="profile_pic" > <img id="profile_pic_img" src=""width="120px" height="120px"/></div>
+				<div id="profile_name"></div>
+				
+					<div class="sid-div right-header" id="right_header"style="display:none;">
+					<div class="invite_parents" onclick="invite_parent()"><img src="icons/parents.png"><span>Invite Parents</span></div>
+					</div>
+					<div class="side-div class-code" id="display_class_code" style="display:none;">
+						<div id="display_code"></div><div id="box-content"></div>
+						<div class="copy-tag" id="copy" onclick="copy_code()"></div>
+					</div>
+					<div id="subscriber-list" style="display:none;">
+						<div id="subscriber-header" class="side-div">
+							<span id="subscriber-count-container1" style="display:block;">Subscribers <span id="subscriber-count"></span></span>
+						</div>
+						<!--auto generated subscribers -->
+						
+					</div>
+					<!--To Delete Class Using Button down at subscriber -->
+					<div id="delete-class-btn" style="display:none;" onclick="delete_class()">
+						<div><img src="icons/new_whitedustbin.png"><span>Delete Class</span></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	
+	
+	
+	
+		<!--script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script-->
+		<script src="js/sidr/jquery.sidr.min.js"></script>
+		<script src="js/jquery.magnific-popup.js"></script>
+		<script type="text/javascript">
+		
+		
+    </script>
+
+
+	
+
+	<!------Modal------>
+	 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#0A3A48;color:white">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel" onclick="edit()"><center>Your Profile</center></h4>
+                </div>
+                <div class="modal-body">
+                    <center id="alertmess"></center>
+                    <center>
+                        <div class="profile-photo-modal"> <img id="profile_pic_img_pp" src="" />
+					</div>
+					<hr>
+                <p><a href="#" onclick="trych();return false;">Change Profile Pic</a>
+                        </p>
+                    </center>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <table class="table table-hover">
+                                <tr>
+                                    <td colspan="2">
+
+										<!--span id="p_name"></span-->
+                                        <div id="Sach"></div>
+                                    </td>
+                                    <td><a id="EditSach"><i id="cc2" class="glyphicon glyphicon-pencil"></i></a>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><i class="glyphicon glyphicon-earphone"></i>  <span id="phn"></span>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span id="eml"></span>
+                                    </td>
+
+                                </tr>
+                                <!--tr>
+                                    <td>
+                                        <div id="Sacho"></div>
+                                    </td>
+                                    
+                                </tr-->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	 <div class="modal fade" id="modalpic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"><center id="pickr">Change Profile Pic</center></h4>
+                </div>
+                <div class="modal-body" id="uplme">
+                    <center >
+                        <span id="pickr1" class="btn btn-default btn-file">
+                                     Upload a new Picture <input type="file" id="att2" onchange="pp()">
+                                </span>
+                    </center>
+                <div id="upperr">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="alert alert-danger" style="padding-top:2px; padding-bottom:2px;">
+                                <center id="uplerr"></center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="changp()"id="forupl" class="btn btn-primary">Confirm</button>
+                    <button type="button" onclick="cancelit()" class="btn btn-default" >Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	<!------->
+		
+		    <script type="text/javascript">
+
+var z=0;
+        $("#EditSach").click(function () {
+        if(z==0){   
+var u2=$("#Sach").text();
+ $('#Sach').replaceWith($('<input  id="Sach"type = "text">' + '</input>'));
+document.getElementById("Sach").placeholder=u2;
+document.getElementById("cc2").className="glyphicon glyphicon-ok";
+//$("#Sacho").val(u);
+z=1;
+}
+else{
+var y2=$("#Sach").val();
+var cc2= document.createElement('div');
+cnam=document.createTextNode(y2);
+cc2.id="Sach";
+cc2.appendChild(cnam);
+document.getElementById('cc2').className="glyphicon glyphicon-pencil";
+$("#Sach").replaceWith(cc2);
+z=0;
+ var currentUser = Parse.User.current();
+if(y2!=""){
+currentUser.set("name", y2); 
+currentUser.save(null, {
+  success: function(currentUser) {
+if(y2!=""){
+$("#Sach").text(y2);
+currentUser.fetch();
+document.getElementById("profile_name").innerHTML = y2+"<br>"+display_name[0];
+document.getElementById("teacher_name").innerHTML = y2;
+document.getElementById("cc2").className="glyphicon glyphicon-pencil";
+ $("#alertmess").text("Your profile name has been edited");
+$("#sentnotif").show();
+window.setTimeout('$("#sentnotif").hide();', 5000);
+}
+  },
+  error: function(currentUser, error) {
+  }
+});
+}
+else{
+$("#Sach").text(currentUser.get("name"));
+document.getElementById("cc2").className="glyphicon glyphicon-pencil";
+}
+}
+});
+
+    
+	
+	</script>
+
+	</body>
+</html>

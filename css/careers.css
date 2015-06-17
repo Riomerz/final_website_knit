@@ -1,0 +1,104 @@
+.dummy-image{
+	  background-color: rgb(205, 202, 202);
+  height: 480px;
+}
+@font-face {
+    font-family: Lato-regular;
+    src: url(fonts/Lato/Lato-Regular.ttf);
+}
+#job-content h3{
+	font-family: Raleway;
+}
+
+#roles .role .role-header{
+	font-family: Avenir-bold;
+	font-size: 1.5em;
+}
+
+.action-box{
+	float: right;
+}
+
+.role{
+	padding-top: 30px;
+	padding-bottom: 30px;
+	border-bottom: 2px solid gray;
+}
+
+.role.last{
+	border: 0;
+}
+
+.action-box .read-more{
+	text-decoration: none;
+}
+
+.action-box .apply{
+	background-color: #f8f8f8;
+	padding: 5px 20px;
+	margin-left: 30px;
+	cursor: pointer;
+}
+
+.contact-details.row div{	
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+.contact-details .footer-center, .contact-details .footer-right{
+	margin-top: 30px;
+	font-size: 1.5em;
+} 
+
+.white-strip{
+	height: 2px;
+	background-color: white;
+	width: 120%;
+	margin-left: -10%;
+}
+
+.gray-strip{
+	background-color: #e1e3e5;
+	text-align: center;
+	font-family: Avenir-bold;
+	font-size: 2em;
+	height: 50px;
+}
+
+.gray-strip h3{
+	margin: 0;
+	padding-top: 15px;
+}
+
+.faq-content{
+	background-color: #f8f8f8;
+}
+
+.faq{
+	  border-bottom: 2px solid rgb(200, 200, 200);
+  padding-top: 10px;
+  margin-bottom: 10px;
+}
+
+.question{
+	font-size: 1.5em;
+	font-family: Avenir-bold;
+	cursor: pointer;
+	margin-bottom: 15px;
+	margin-top: 10px;
+}
+
+.answer{
+	font-size: 1.2em;
+	background-color: #e1e3e5;
+	width: 120%;
+  margin-left: -10%;
+  padding-left: 10%;
+  padding-bottom: 10px;
+}
+
+.question .sign{
+	  width: 20px;
+  display: inline-block;
+}
+
