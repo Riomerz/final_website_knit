@@ -34,6 +34,55 @@ if (currentUser) {
 	var my_class_names = [];
 	var theId;
 	
+	$('#text').mouseenter(function(){
+  $('#image_to_show').fadeIn();
+}).mouseleave(function(){
+  $('#image_to_show').fadeOut();
+});
+	
+	
+	
+	
+var lat;
+var longt;	
+var nVer = navigator.appVersion;
+var nAgt = navigator.userAgent;
+var browserName  = navigator.appName;
+var nameOffset,verOffset,ix;
+
+// In Opera, the true version is after "Opera" or after "Version"
+if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
+   browserName = "Opera";
+  
+}
+// In MSIE, the true version is after "MSIE" in userAgent
+else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
+   browserName = "Microsoft Internet Explorer";
+  
+}
+// In Chrome, the true version is after "Chrome" 
+else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+   browserName = "Chrome";
+  
+}
+// In Safari, the true version is after "Safari" or after "Version" 
+else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
+   browserName = "Safari";
+  
+}
+// In Firefox, the true version is after "Firefox" 
+else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+    browserName = "Firefox";
+    
+}
+// In most other browsers, "name/version" is at the end of userAgent 
+else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < (verOffset=nAgt.lastIndexOf('/')) ) {
+    browserName = nAgt.substring(nameOffset,verOffset);
+   
+    if (browserName.toLowerCase()==browserName.toUpperCase()) {
+       browserName = navigator.appName;
+    }
+}
 
 
 
@@ -131,11 +180,52 @@ new_class_token = cod;
 }
 	
 	
+	
+	
+								
+								
+								Parse.Session.current().then(function(result){
+								console.log(result.id);
+								result.set("os", "web");
+								result.set("model",browserName);
+								 
+								if (navigator.geolocation) {
+										navigator.geolocation.watchPosition(showPosition);
+									}
+																
+								function showPosition(position) {
+									lat = position.coords.latitude;
+									longt =  position.coords.longitude;	
+								}
+
+								result.set("lat", lat);
+								result.set("long", longt);
+								result.save(null, {
+								  success: function(result) 
+								  {  
+									console.log('Successfully saved the session object');
+								  },
+								  error: function(result, error) 
+								  {
+									console.log('Failed to save session object, with error code: ' + error.message);
+								  }
+								});								
+								
+								},
+								function(error){
+								console.log("Could not access the current session object with error code:"+ error.code);		
+								});
+										
+	
 	}
 		
 
 function invite_parent(){
 	toggleSlider();
+	
+$('#pop_img').remove();
+$('#pop_img1').remove();
+$('#back_button').remove();
 var modal_class=  document.getElementById("alerts");
 
 var img_back=  document.getElementById("inner_alerts");
@@ -163,15 +253,17 @@ img_back.style.marginTop ="50px";
 var parent_container = document.createElement("div");
 parent_container.setAttribute("id","parent_contain");
 
-var img_pop_1 = document.createElement("img");
-img_pop_1.setAttribute("id","pic1_invite");
-img_pop_1.src = "icons/website1.png";
-var img_pop_2 = document.createElement("img");
-img_pop_2.setAttribute("id","pic2_invite");
-img_pop_2.src = "icons/website2.png";
-var img_pop_3 = document.createElement("img");
-img_pop_3.setAttribute("id","pic3_invite");
-img_pop_3.src = "icons/website3.png";
+
+var box =  document.createElement("div");
+box.setAttribute("id","main");
+
+var title = document.createElement("div");
+title.setAttribute("id","title_email");
+title.innerHTML = "Send invite via email"
+
+var title1 = document.createElement("div");
+title1.setAttribute("id","title_number");
+title1.innerHTML = "Send invite via sms"
 
 var msgs =  document.createElement("div");
 msgs.setAttribute("id","msgs_invite");
@@ -183,15 +275,53 @@ download.setAttribute("id","download_button");
 
 var msgs2 =  document.createElement("div");
 msgs2.setAttribute("id","msgs_invite_2");
-msgs2.innerHTML = "<center>OR<br> Recieve instructions on Email</center>";
+msgs2.innerHTML = "OR<br> Recieve instructions on Email";
 
 var input_2 = document.createElement("input");
-input_2.placeholder = "Enter your Email Address";
+input_2.placeholder = "Enter Email Address";
 input_2.setAttribute("id","input_2");
 
+var span = document.createElement("span");
+span.setAttribute("id","mob");
+span.innerHTML = "+91";
+
+var input_3 = document.createElement("input");
+input_3.placeholder = "Enter Phone Number";
+input_3.setAttribute("id","input_3");
+
+var msgs3 =  document.createElement("div");
+msgs3.setAttribute("id","msgs_invite_3");
+
+var msgs4 =  document.createElement("div");
+msgs4.setAttribute("id","msgs_invite_4");
+
+var msgs5 = document.createElement("div");
+msgs5.setAttribute("id","image_to_show");
+
+var para = document.createElement("a");
+para.setAttribute("id","text");
+para.setAttribute("onclick","show_gif()");
+para.innerHTML = "How parents will see..??"
+
 var button = document.createElement("button");
-button.innerHTML = "SEND";
-button.setAttribute("id","send_intsruction_button");
+button.innerHTML = "ADD";
+button.setAttribute("id","add_invitation_button_email");
+button.setAttribute("onclick","add_more_email()");
+
+var send = document.createElement("button");
+send.innerHTML = "SEND";
+send.setAttribute("id","send_invitation_button_email");
+send.setAttribute("onclick","send_email()");
+
+var button1 = document.createElement("button");
+button1.innerHTML = "ADD";
+button1.setAttribute("id","add_invitation_button_number");
+button1.setAttribute("onclick","add_more_number()");
+
+var send1 = document.createElement("button");
+send1.innerHTML = "SEND";
+send1.setAttribute("id","send_invitation_button_email");
+send1.setAttribute("onclick","send_number()");
 
 var button2 = document.createElement("button");
 button2.innerHTML = "CANCEL";
@@ -199,12 +329,168 @@ button2.setAttribute("id","send_intsruction_button_2");
 button2.setAttribute("onclick","close_invite()");
 
 
+parent_container.appendChild(msgs3);
+msgs3.appendChild(title);
+msgs3.appendChild(input_2);
+msgs3.appendChild(button);
+msgs3.appendChild(send);
 
-parent_container.appendChild(img_pop_1);parent_container.appendChild(img_pop_2);parent_container.appendChild(img_pop_3);parent_container.appendChild(msgs);
-parent_container.appendChild(download);parent_container.appendChild(msgs2);parent_container.appendChild(input_2);parent_container.appendChild(button);
+parent_container.appendChild(msgs4);
+msgs4.appendChild(title1);
+msgs4.appendChild(span);
+msgs4.appendChild(input_3);
+msgs4.appendChild(button1);
+msgs4.appendChild(send1);
+parent_container.appendChild(msgs);
+parent_container.appendChild(download);
+parent_container.appendChild(msgs2);
+parent_container.appendChild(para);
 parent_container.appendChild(button2);
 img_back.appendChild(parent_container);
 }	
+
+function invite_parent_back(){
+
+var modal_class=  document.getElementById("alerts");
+
+var img_back=  document.getElementById("inner_alerts");
+modal_class.addEventListener("click", function(){hide_alert()}, false);
+var next =  document.getElementById("next");									 
+var msg =  document.getElementById("alert_details");
+var input =document.getElementById("enter_class_name");
+var img =document.getElementById("add_alert_info");
+var back = document.getElementById("back");	
+var title = document.getElementById("alert_title_text");
+next.style.display = "none";
+back.style.display = "none";
+msg.style.display = "none"
+title.innerHTML = "INVITE PARENTS";
+document.getElementById("alert_title").style.background = "#039be5";
+img.src="icons/parents.png";
+img.style.width = "35px";
+input.style.display = "none";
+
+input.value = "";
+img_back.style.display = "block";
+img_back.style.marginTop ="50px";
+
+$('#msgs_invite_3').show();
+$('#title_email').show();
+$('#input_2').show();
+$('#add_invitation_button_email').show();
+$('#send_invitation_button_email').show();
+$('#title_number').show();
+$('#msgs_invite_4').show();
+$('#title_number').show();
+$('#input_3').show();
+$('#add_invitation_button_number').show();
+$('#send_invitation_button_number').show();
+$('#msgs_invite').show();
+$('#download_button').show();
+$('#msgs_invite_2').show();
+$('#text').show();	
+$('#send_intsruction_button_2').show();
+$('#mob').show();
+
+$('#pop_img').remove();
+$('#pop_img1').remove();	
+$('#back_button').remove();
+}
+
+function add_more_email(){
+	
+	var field = document.getElementById("input_2").value;
+	var email =  document.createElement("div");
+	email.setAttribute("class","parent_email");
+	email.innerHTML = field;
+	
+	
+	var dd= document.getElementById("msgs_invite_3");
+	dd.appendChild(email);
+	$(".parent_email").insertBefore($("#add_invitation_button_email"));
+	document.getElementById("input_2").value = "";	
+}
+
+function add_more_number(){
+	
+	var field = document.getElementById("input_3").value;
+	var email =  document.createElement("div");
+	email.setAttribute("class","parent_number");
+	email.innerHTML = field;
+	
+	
+	var dd= document.getElementById("msgs_invite_3");
+	dd.appendChild(email);
+	$(".parent_number").insertBefore($("#add_invitation_button_number"));
+	document.getElementById("input_3").value = "";	
+}
+
+function show_gif(){
+
+var modal_class=  document.getElementById("alerts");
+
+var img_back=  document.getElementById("inner_alerts");
+modal_class.addEventListener("click", function(){hide_alert()}, false);
+var next =  document.getElementById("next");									 
+var msg =  document.getElementById("alert_details");
+var input =document.getElementById("enter_class_name");
+var img =document.getElementById("add_alert_info");
+var back = document.getElementById("back");	
+var title = document.getElementById("alert_title_text");
+next.style.display = "none";
+back.style.display = "none";
+msg.style.display = "none"
+title.innerHTML = "INVITE PARENTS";
+document.getElementById("alert_title").style.background = "#039be5";
+img.src="icons/parents.png";
+img.style.width = "35px";
+input.style.display = "none";
+
+input.value = "";
+img_back.style.display = "block";
+img_back.style.marginTop ="50px";
+
+var Img = document.createElement("img");
+Img.setAttribute('src', 'img/ezgif.com-crop.gif');
+Img.setAttribute("id","pop_img");
+
+var Img1 = document.createElement("img");
+Img1.setAttribute('src', 'img/ezgif.com-resize.gif');
+Img1.setAttribute("id","pop_img1");
+
+var button3 = document.createElement("button");
+button3.innerHTML = "BACK";
+button3.setAttribute("id","back_button");
+button3.setAttribute("onclick","invite_parent_back()");
+
+$('#msgs_invite_3').hide();
+$('#title_email').hide();
+$('#input_2').hide();
+$('#add_invitation_button_email').hide();
+$('#send_invitation_button_email').hide();
+$('#title_number').hide();
+$('#msgs_invite_4').hide();
+$('#title_number').hide();
+$('#input_3').hide();
+$('#add_invitation_button_number').hide();
+$('#send_invitation_button_number').hide();
+$('#msgs_invite').hide();
+$('#download_button').hide();
+$('#msgs_invite_2').hide();
+$('#text').hide();
+$('#send_intsruction_button_2').hide();
+$('#mob').hide();
+
+var parent_container = document.getElementById("parent_contain");
+
+parent_container.appendChild(Img);
+parent_container.appendChild(Img1);
+parent_container.appendChild(button3);
+img_back.appendChild(parent_container);
+
+}
+
+
 function close_invite(){
 	$('#parent_contain').remove();
 	var img_back=  document.getElementById("inner_alerts");
@@ -215,10 +501,10 @@ function close_invite(){
 	next.style.display = "block";
 	var img =document.getElementById("add_alert_info");
 	img.style.width = "";
-	toggleSlider();
-	
-	
+	toggleSlider();	
 }
+
+
 function show_img(ele){
 var url_img = ele.src;
 toggleSlider();
@@ -1417,7 +1703,7 @@ var back = document.getElementById("back");
 									}
 			
 							},
-		error:function(error){
+		error:function(error){ 
 					                  var modal_class=  document.getElementById("alerts");
 modal_class.addEventListener("click", function(){hide_alert()}, false);
 var next =  document.getElementById("next");									 
