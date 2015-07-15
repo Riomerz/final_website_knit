@@ -15,7 +15,6 @@
 		<link rel="stylesheet" type="text/css" href="css/media-query.css">
 		<!-- Magnific Popup core CSS file -->
 		<link rel="stylesheet" href="css/magnific-popup.css"> 
-		
 	
 		<!-- Latest compiled and minified JavaScript -->
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -23,6 +22,8 @@
 		<script src="js/sidr/jquery.sidr.min.js"></script>
 	
 		<script src="js/jquery.magnific-popup.js"></script>
+		
+		
 		 
 		 <link rel="stylesheet" type="text/css" href="css/dstyle.css">
 		 <script>
@@ -67,9 +68,6 @@ background: url(icons/knit_loader8.gif) center  no-repeat #fff;
 }
 
 #alerts{
-
-
-
 position: fixed;
 	left: 0px;
 	top: 0px;
@@ -77,20 +75,13 @@ position: fixed;
 	height: 100%;
 	z-index: 9999;
 display:none;
-background:#353839;
-opacity:0.973333;
+background: rgba(53, 56, 57, 0.7);
+opacity:0.999;
 }
 
-#inner_alerts{
-position:absolute;
-width:65%;
 
-margin-top:10%;
-margin-left:15%;
 
-background-color:white;
 
-}
 @media screen and (min-width: 600px) and  (max-width: 1200px) {
 #next{
 width:60px;
@@ -101,11 +92,11 @@ width:60px;
 }
 
 .icon-remove{
-padding-left:36px;
+
 }
 
 .icon-cog{
-padding-left:5px;
+
 }
 
 #msgs_invite_3{
@@ -155,9 +146,50 @@ float:right;
 				<div id="alert_title_text"></div>
 			</div>
 			<div id="alert_details"></div>
-			<input class="input-alert"id="enter_class_name" type="text" placeholder="Create Class"style=" font: 20px lato;border:1px solid black;"  size ="26"name="new_c_name">
+			<div id="alert_profile_pic"><p style="text-align:center;font-family:Gotham-Light;font-size:30px;margin-bottom:10%">Your Profile</p><img id="profile_pic_img_pp" src="" />
+					</div>
+			<div id="alert_profile">
+                                            
+									<div class="profile_popup">
+                                        <span id="Sach" style="width:80%"></span>
+                                    
+                                    <a id="EditSach"><i id="cc2" class="glyphicon glyphicon-pencil" style="float:right"></i></a>
+									</div>
+                                    
+                          <div class="profile_popup">      
+                          <i class="glyphicon glyphicon-earphone"></i>  <span id="phn"></span>
+                            </div>        
+
+                               <div class="profile_popup"> <span id="eml"></span></div>
+							   <div><a href="#" onclick="trych();return false;" style="margin-left:80px">Change Profile Pic</a></div>
+                                
+			</div>
+			<p style="float:left;margin-left:6%;font-family: Lato-regular;margin-bottom:0px"class="number-alerts" id="alert_msg"></p>
+			<input class="input-alert"id="enter_class_name" type="text" placeholder="Class Name"style=" font: 20px lato;border:1px solid #999999;font-family:Lato-regular"  size ="26"name="new_c_name">
+			
+			<!--center id="alertmess"></center-->
+			 <div id="uplme">
+			 
+                    <center >
+                        <span id="pickr1" class="btn btn-default btn-file">
+                                     Upload a new Picture <input type="file" id="att2" onchange="pp()">
+                                </span>
+                    </center>
+                <div id="upperr">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="alert alert-danger" style="padding-top:2px; padding-bottom:2px;">
+                                <center id="uplerr"></center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+			
+			
 			<div id="back"></div>
 			<div id="next"></div>
+			<div id="btn"></div>
 		</div>
 	</div>
 	
@@ -165,18 +197,27 @@ float:right;
 	<div style="position:fixed;width:100%;z-index:999">
 		<nav class="navbar">
 		  <div class="container-fluid">
+		  <button type="button" class="btn btn-default btn-lg" style="float:left" id="sidebar">
+			  <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+			</button>
+			
+			    <!--a href="#" class="toggle-nav btn btn-lg btn-success" id="sidebar"><i class="fa fa-bars"></i></a-->
+			
 		    <div class="navbar-header">
 		      <a class="navbar-brand" href="#">
-		        <a href="dashboard.html"><span><img class="brand-logo" src="icons/logo.png"></span></a>
+		        <a href="dashboard.html"><span><img class="brand-logo img-responsive" src="icons/logo.png"></span></a>
 		      </a>
 		    </div>		  
 		    <div id="dd" class="wrapper-dropdown-5" tabindex="1"  onclick="show_profile()" >
-				<div id="teacher_name"></div>
+				<div id="teacher_name" style="font-size:18px"></div>
 				<div  id="dropdown"class="dropdown" >
 				<div id="settings_wrapper">
 					<div class="profile-photo" id="profile-photo" ><img id="profile_pic_img_dd" src="" />
 					</div>
-					<div><a href="#" style="margin-left:-15px" data-toggle="modal" data-target="#myModal2"><i class="icon-user"></i><center>Profile</a></div>
+					<div><p id= "profilename"></p> </div>
+					<div><p id="profileusername"></p></div>
+					<!--div><a href="#" data-toggle="modal" data-target="#myModal2"><i class="icon-user"></i>Profile</a></div-->
+					<div><a onclick="view_profile()"><i class="icon-user"></i>Profile</a></div>
 					<div><a onclick="settings()" ><i class="icon-cog" ></i>Reset Password</a></div>
 					<div><a onclick="logout()" ><i class="icon-remove"></i>Log out</a></div>
 				</div>
@@ -186,8 +227,9 @@ float:right;
 		</nav>
 	</div>	
 		<div id="page-container" class="container-fluid">
-			<div class="page-left-container  ">
+			<div class="page-left-container">
 				<div class="wrapper">
+				
 			
 				<div class="left-header">
 					
@@ -202,12 +244,22 @@ float:right;
 					<div onclick="create_class()"><img src="icons/plus.png"><span>Create Class</span></div>
 				</div>
 				</a>
+				
 				</div>
 			</div>
 	
 			<div class="page-center-container col-xs-12 col-sm-12 col-md-8 col-lg-8" >
 				<div id="form-wrapper" class="col-xs-12 col-sm-12">
-					<!--<input type="text" class="add-class col-xs-12 col-sm-12" placeholder="+Add Classes" ></input>-->
+					
+					<div type="text" class="add-class col-xs-12 col-sm-12">
+					<div style="position:absolute;float:left;padding-left: 10px;padding-top: 10px;font-size: px;font-family: Lato-regular;  };font-weight: bold;">To</div>
+					<div  id="base" ></div>
+					
+						<div id="classname"></div>
+					
+					
+					</div>
+					
 					<textarea onfocus="highlight_send()" onfocusout="highlight_back()" class="add-text col-xs-12 col-sm-12 "  id="send_message" >
 						
 					</textarea>
@@ -240,23 +292,29 @@ float:right;
 							<!--<a class="image-popup-no-margins" onclick="show_this(this)">
 							<img   id="load-feed-image" src="icons/logo.png">
 							</a>-->
-						<a  href="#" class="showPopup" ><img onclick="show_img(this)" id="load-feed-image" src="icons/logo.png"/></a>
+						<a  href="#" class="showPopup" ><img onclick="show_img(this)" id="load-feed-image" src="icons/logo.png" style="max-width:100%;height:auto"/></a>
 							 
 						</div>
 						<div class="feed-actions">
 							<div class="feed-footer-left">						
 							<div class="like-btn inline-content">
-								<img src="icons/like_new.png">
+								
 								<div class="like-btn-count inline-content feed-footer-data feed-footer-number">12</div>
+								<img src="icons/like_new.png">
 							</div>
 							<div class="question-btn inline-content">
-								<img src="icons/question_new.png">
+								
 								<div class="question-btn-count inline-content feed-footer-data feed-footer-number">17</div>
+								<img src="icons/question_new.png">
 							</div>
+														
+														<div class="seen-by inline-content feed-footer-data color-gray feed-footer-number">
+														 <span class="seen-by-count"> 36</span><img src="icons/eye.png"/>
+								
 							</div>
-							<div class="seen-by inline-content feed-footer-data feed-footer-center color-gray">
-								<img src="icons/eye.png"/> <span class="seen-by-count"> 36</span>
+							
 							</div>
+
 							<div class="feed-time feed-footer-data feed-footer-right color-gray">
 								6:30 PM
 							</div>
@@ -269,7 +327,7 @@ float:right;
 				
 			</div>
 			
-			<div  class="page-right-container " >
+			<div  class="page-right-container col-xs-12 col-sm-12" >
 				<div class="wrapper" id="susbscriber-list-names" >
 				<div id="profile_pic" > <img id="profile_pic_img" src=""width="120px" height="120px"/></div>
 				<div id="profile_name"></div>
@@ -312,7 +370,7 @@ float:right;
 	
 
 	<!------Modal------>
-	 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	 <!--div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#0A3A48;color:white">
@@ -335,7 +393,7 @@ float:right;
                                 <tr>
                                     <td colspan="2">
 
-										<!--span id="p_name"></span-->
+										
                                         <div id="Sach"></div>
                                     </td>
                                     <td><a id="EditSach"><i id="cc2" class="glyphicon glyphicon-pencil"></i></a>
@@ -352,21 +410,16 @@ float:right;
                                     </td>
 
                                 </tr>
-                                <!--tr>
-                                    <td>
-                                        <div id="Sacho"></div>
-                                    </td>
-                                    
-                                </tr-->
+                                
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div-->
 	
-	 <div class="modal fade" id="modalpic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	 <!--div class="modal fade" id="modalpic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -395,7 +448,7 @@ float:right;
                 </div>
             </div>
         </div>
-    </div>
+    </div-->
 	<!------->
 		
 		    <script type="text/javascript">
@@ -449,6 +502,28 @@ document.getElementById("cc2").className="glyphicon glyphicon-pencil";
     
 	
 	</script>
+	<script> 
+$(document).ready(function(){
+    $("#sidebar").click(function(){
+
+	if($('.page-left-container').hasClass('active'))
+{
+    $('.page-left-container').css('left', '-70%');
+	$('.page-left-container').removeClass('active');
+} 
+else
+{
+    $('.page-left-container').css('left', '0%');
+	$('.page-left-container').addClass('active');
+}
+	
+	});
+});
+</script> 
+
+
+	
+
 
 	</body>
 </html>

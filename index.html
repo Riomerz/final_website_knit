@@ -33,11 +33,11 @@ window.location.href="./dashboard.html"
 		<script src="js/lightslider.js"></script>
 		<script src="js/script.js"></script>
 		<link type="text/css" rel="stylesheet" href="css/lightGallery.css" />                  
-		<!--<script src="js/lightGallery.js"></script>
-		<script src="js/jquery.magnific-popup.js"></script>-->
+		<script src="js/lightGallery.js"></script>
+		<!--script src="js/jquery.magnific-popup.js"></script-->
 		<style>
 		#alerts{
-background:#353839;
+background:rgba(53, 56, 57, 0.7);
 opacity:0.979;
 width:100%;
 display:none;
@@ -49,28 +49,31 @@ position: fixed;
 	z-index: 9999;
 }
 
-#inner_alerts{
-position:absolute;
-width:65%;
 
-margin-top:10%;
-margin-left:15%;
-
-background-color:white;
-
-}
 a {
 		text-decoration:none;
 				color:black;
 
 		}
-@media screen and (min-width: 600px) and  (max-width: 1200px) {
+@media screen and (min-width: 800px) and  (max-width: 1200px) {
 #next{
 width:60px;
 }
 #back{
 width:60px;
 }
+
+#inner_alerts{
+position:absolute;
+width:35%;
+
+margin-top:10%;
+margin-left:31%;
+
+background-color:white;
+
+}
+
 }		
 	
 		</style>
@@ -80,16 +83,47 @@ width:60px;
 	<div  id="alerts">
 		<div id="inner_alerts">
 			<div id="alert_title">
-				<img id="add_alert_info" src="" width="25px" />
+				<img id="add_alert_info" src="" width="40px" />
 				<div id="alert_title_text"></div>
 			</div>
-			<div id="alert_details"></div>
-			<div id="select_number"></div>
-			<div id="select_email"></div>
+			<div id="alert_details">
+			<p id="msg" class="number-alerts_2"></p>
+			<label class="mobile-input" id= "code_text" style="margin-bottom:25px;margin-top: 5%;">Enter the verification code sent to your number.</label>
+			<input type="text" class="mobile-input" id="enter_code" placeholder="CODE" ><p style="float:right;margin-right:5%;font-family: Avenir-regular;"class="number-alerts" id="alert_msg_code"></p><br>
 			
-			<span id="fixed" class="input-alert2" style="color: black;background-color: white;border-color: black;position:absolute;width:initial; padding:5px 8px;font: 20px lato;border:1px solid black" >+91</span>
+				<div id="login" class="reg-form">
+								<div class="choose-type active" data-show="for-mobile">MOBILE</div>
+								<div class="choose-type inactive" data-show="for-email" style="text-align:center">Are you an old user?<br>login using your email ID</div>
+								
+								<div id="for-mobile" class="home-reg-content">
+								<div class="input-group">
+							
+								
+								<!--input type="text" class="name-input" placeholder="NAME"/><br></br-->
+								<!--span class="input-group-addon" style="color: white;background-color: #aab2bd;border-color: #96a0ad;float:left;width:initial">+91</span-->
+								<span style="color: black;background-color: #e1e3e5;border-color: #96a0ad;float:left;width:initial; padding:5px 8px;font-family: Avenir-regular;padding-bottom:7px" >+91</span>
+								<input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="enter_number" size= "12" class="mobile-input"/ placeholder="MOBILE NUMBER"><p style="float:right;margin-right:5%;font-family: Avenir-regular;"class="number-alerts" id="alert_msg"></p><br>
+								<a class="text" style= "text-align:center;font-family: Avenir-regular;float:left">You may receive a verification call/sms on this number.</a><br><br>
+								<a style="float:left;"> <button class="signup" onclick="verify_number()">LOGIN</button></a>
+								</div>
+								</div>
+								<div id="for-email" class="home-reg-content">
+									<div class="input-group">
+									<input type="text" id="email_id" placeholder="EMAIL ADDRESS" ><br>
+									<input type="password" id="password" class="name-input" placeholder="PASSWORD"/><br><p class="number-alerts" id="email_alert"></p>
+									
+									<a id="email-login" ><button onclick="login_verify()"class="signup">LOGIN</button></a>
+									<a id="forgot_password">Forgot Password?</a>
+									</div>
+								</div>
+							</div>
+			</div>
+			<!--div id="select_number"></div>
+			<div id="select_email"></div-->
+			
+			<!--span id="fixed" class="input-alert2" style="color: black;background-color: white;border-color: black;position:absolute;width:initial; padding:5px 8px;font: 20px lato;border:1px solid black" >+91</span>
 			<input id="enter_email" class="input-alert3" type="text" placeholder="Email/Number"style=" font: 20px lato;border:1px solid black;"  size ="26"name="email">
-			<input id="enter_password" class="input-alert" type="password" placeholder="Password"style=" font: 20px lato;border:1px solid black;"  size ="26"name="password">
+			<input id="enter_password" class="input-alert" type="password" placeholder="Password"style=" font: 20px lato;border:1px solid black;"  size ="26"name="password"-->
 			<div id="back"></div>
 			<div id="next"></div>
 		</div>
@@ -110,7 +144,9 @@ width:60px;
 		<div id="intro-page">
 			<div class="container-fluid">
 				<div class="row">
+					<h3 id="header">KNIT IS SIMPLE.</h3>
 					<div id="app-gallery-09" class="col-lg-4 col-md-4">
+					
 						<!-- <img src="icons/phone1.png"> -->
 						<ul id="imageGallery">
 						  <li>
@@ -126,17 +162,14 @@ width:60px;
 					</div>
 					<div class="col-lg-8 col-md-8">
 						<div id="intro-text">
-							<h3>KNIT IS SIMPLE.</h3>
+							<!--h3>KNIT IS SIMPLE.</h3-->
 							<div id="home-reg" class="reg-form">
-								<div class="choose-type active" data-show="for-teacher">I AM A TEACHER</div>
-								<div class="choose-type inactive" data-show="for-parent">I AM A PARENT/STUDENT</div>
+								<div class="choose-type active" data-show="for-teacher" id="teacher">I AM A TEACHER</div>
+								<div class="choose-type inactive" data-show="for-parent" id="parent">I AM A PARENT/STUDENT</div>
 								
 								<div id="for-teacher" class="home-reg-content">
 								<div class="input-group">
-								<!--select style="float:left;"class="select-option">
-									<option>Mr.</option>
-									<option>Ms.</option>
-								</select-->
+								
 								
 								<input type="text" class="name-input" placeholder="NAME"/><br></br>
 								<!--span class="input-group-addon" style="color: white;background-color: #aab2bd;border-color: #96a0ad;float:left;width:initial">+91</span-->

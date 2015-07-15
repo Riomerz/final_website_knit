@@ -19,40 +19,53 @@ else
  $("#alerts").fadeOut(100);
 }
 
+window.onload = function(){
+	$('#alert_details').hide();
+	var hide = document.getElementById("for-email");
+	hide.style.display = "none";
+}
 
 
 function start_login(){
 	
 										toggleSlider();
+									
 										var modal_class=  document.getElementById("alerts");
 										modal_class.addEventListener("click", function(){hide_alert()}, false);
-									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
+									    var next =  document.getElementById("next");
+										var back = document.getElementById("back");									
+									/*	var msg =  document.getElementById("alert_details");
 										var input1 =document.getElementById("enter_email");
 										var input2 =document.getElementById("enter_password");
 										var prefix =document.getElementById("fixed");
-										var img =document.getElementById("add_alert_info");
-										var back = document.getElementById("back");
+										//var img =document.getElementById("add_alert_info");
 										var sel_number = document.getElementById("select_number");
 										var sel_email = document.getElementById("select_email");
-										img.src="icons/info.png";
-										img.style.display="block";
-										sel_number.style.display="block";
+										//img.src="icons/info.png";
+										//img.style.display="block";
+										/*sel_number.style.display="block";
 										sel_email.style.display="block";
 										sel_email.innerHTML ="Email";
 										sel_number.innerHTML ="Mobile No.";
 										input1.style.display ="none";
 									    input2.style.display ="none";
-										prefix.style.display ="none";
+										prefix.style.display ="none";*/
 										back.style.display = "none";
 									    next.innerHTML = "DISMISS";
 										next.style.display = "block";
-										document.getElementById("alert_title_text").innerHTML ="SELECT";
-										document.getElementById("alert_title").style.background = "#039be5";
-									    msg.innerHTML = "Select a login option<br><br>If you have registered using mobile number choose Mobile number option<br>(mobile number verification will be required).<br><br><br>else choose Email option <br>(enter your Email Id	and Password to log in).<br><br><br><br><br><br>";
+										document.getElementById("alert_title_text").innerHTML ="LOGIN";
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPElEQVQYV2NkIA4YMxKhzpiBgeEsIYVgRSDD8CmEK8KnEEURLoUYirApxKoIXSFORcgK8SqCKSSoCKQQALilCT6rrB3mAAAAAElFTkSuQmCC) repeat";
+									    //msg.innerHTML = "Select a login option<br><br>If you have registered using mobile number choose Mobile number option<br>(mobile number verification will be required).<br><br><br>else choose Email option <br>(enter your Email Id	and Password to log in).<br><br><br><br><br><br>";
+										$('#alert_details').show();
+										$('#code_text').hide();
+										$('#enter_code').hide();
+										$('#login').show();
+										$('#add_alert_info').hide();
+										$('#msg').hide();
+										document.getElementById('alert_msg').innerHTML = "";
 										next.setAttribute("onclick","toggleSlider()");
-										sel_email.setAttribute("onclick","check_login_email()");
-										sel_number.setAttribute("onclick","check_login_number()");
+										//sel_email.setAttribute("onclick","check_login_email()");
+										//sel_number.setAttribute("onclick","check_login_number()");
 	
 }
 function check_login_number(){
@@ -81,12 +94,12 @@ function check_login_number(){
 										back.style.display = "block";
 										next.style.display = "block";
 										document.getElementById("alert_title_text").innerHTML ="LOGIN";
-										document.getElementById("alert_title").style.background = "#039be5";
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPElEQVQYV2NkIA4YMxKhzpiBgeEsIYVgRSDD8CmEK8KnEEURLoUYirApxKoIXSFORcgK8SqCKSSoCKQQALilCT6rrB3mAAAAAElFTkSuQmCC) repeat";
 									    msg.innerHTML = "";
-										next.innerHTML ="LOGIN";
-										back.innerHTML ="DISMISS";
-										next.setAttribute("onclick","verify_number()");
-										back.setAttribute("onclick","toggleSlider()");
+										next.innerHTML ="DISMISS";
+										//back.innerHTML ="DISMISS";
+										next.setAttribute("onclick","toggleSlider()");
+										//back.setAttribute("onclick","toggleSlider()");
 
 
 }
@@ -118,7 +131,7 @@ function check_login_email(){
 										input2.style.display ="block";
 										back.style.display = "block";
 										document.getElementById("alert_title_text").innerHTML ="EMAIL LOGIN";
-										document.getElementById("alert_title").style.background = "#039be5";
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPElEQVQYV2NkIA4YMxKhzpiBgeEsIYVgRSDD8CmEK8KnEEURLoUYirApxKoIXSFORcgK8SqCKSSoCKQQALilCT6rrB3mAAAAAElFTkSuQmCC) repeat";
 									     msg.innerHTML = "";
 										next.innerHTML ="LOGIN";
 										back.innerHTML ="DISMISS";
@@ -127,12 +140,14 @@ function check_login_email(){
 
 
 }
+
+
 function verify_number(){
-	x1 = document.getElementById("enter_email").value;
+	x1 = document.getElementById("enter_number").value;
 
 	ph_number = x1;
 	if(x1==""){
-										var modal_class=  document.getElementById("alerts");
+										/*var modal_class=  document.getElementById("alerts");
 										modal_class.addEventListener("click", function(){hide_alert()}, false);
 									    var next =  document.getElementById("next");									 
 										var msg =  document.getElementById("alert_details");
@@ -149,14 +164,17 @@ function verify_number(){
 									    sel_email.style.display ="none";
 										prefix.style.display = "none";
 										back.style.display = "block";
-										document.getElementById("alert_title_text").innerHTML ="EMPTY FIELD";
-										document.getElementById("alert_title").style.background = "#ffc107";
+										//document.getElementById("alert_msg").innerHTML ="*EMPTY FIELD";*/
+										document.getElementById('alert_msg').innerHTML = "*EMPTY FIELD";
+										setTimeout(function(){$('#alert_msg').hide();},3000);
+										//document.getElementById('alert_msg').innerHTML = "*EMPTY FIELD";
+										/*document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Some field are empty.";
 										next.innerHTML ="LOGIN";
 										next.style.display = "block";
 										back.innerHTML ="DISMISS";
 										next.setAttribute("onclick","verify_number()");
-										back.setAttribute("onclick","toggleSlider()");
+										back.setAttribute("onclick","toggleSlider()");*/
 	
 }
 else if(x1.length==10){
@@ -166,7 +184,7 @@ else if(x1.length==10){
 	if(Number(x1)==NaN)
 	{
 				
-				var modal_class=  document.getElementById("alerts");
+			/*	var modal_class=  document.getElementById("alerts");
 				modal_class.addEventListener("click", function(){hide_alert()}, false);
 									    var next =  document.getElementById("next");									 
 										var msg =  document.getElementById("alert_details");
@@ -190,128 +208,60 @@ else if(x1.length==10){
 										next.innerHTML ="LOGIN";
 										back.innerHTML ="DISMISS";
 										next.setAttribute("onclick","verify_number()");
-										back.setAttribute("onclick","toggleSlider()");
+										back.setAttribute("onclick","toggleSlider()");*/
+										document.getElementById("alert_msg").innerHTML ="*INVALID* Please check your number again";
+										setTimeout(function(){$('#alert_msg').hide();},3000);
 	}
 	else{generate_code_login(x1);
+		document.getElementById("alert_title_text").innerHTML ="LOGIN";
+		document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPElEQVQYV2NkIA4YMxKhzpiBgeEsIYVgRSDD8CmEK8KnEEURLoUYirApxKoIXSFORcgK8SqCKSSoCKQQALilCT6rrB3mAAAAAElFTkSuQmCC) repeat";
+		$('#add_alert_info').hide();
+		}
 		
-/*		var user = Parse.Object.extend("User");
-				var query = new Parse.Query(user);
-				var ph_number =document.getElementById("enter_email").value;
-				console.log(ph_number);
-				query.equalTo("phone", ph_number);
-				query.first({
-				  success: function(results) {
-					 console.log(results);
-					generate_code_login(x1);
-					 
-				  },
-				  error: function(error) {
-							
-					var modal_class=  document.getElementById("alerts");
-				modal_class.addEventListener("click", function(){hide_alert()}, false);
-									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
-										var img =document.getElementById("add_alert_info");
-										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
-										img.src="icons/error.png";
-										img.style.display="block";
-										sel_number.style.display ="none";
-									    sel_email.style.display ="none";
-										next.style.display = "block";
-										back.style.display = "block";
-										prefix.style.display = "none";
-										document.getElementById("alert_title_text").innerHTML ="INVALID";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "User Doesn't Exists";
-										next.innerHTML ="LOGIN";
-										back.innerHTML ="DISMISS";
-										next.setAttribute("onclick","verify_number()");
-										back.setAttribute("onclick","toggleSlider()");
-					
-				  }
-				});
-				*/
-				
-	}
-
 
 
 }
 else{
 		var modal_class=  document.getElementById("alerts");
 		modal_class.addEventListener("click", function(){hide_alert()}, false);
-									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
+									    var next =  document.getElementById("next");
+										document.getElementById('enter_number').value= "";
+										document.getElementById('alert_msg').innerHTML = "";
+										//var msg =  document.getElementById("alert_details");
+										//var input1 =document.getElementById("enter_email");
+										//var input2 =document.getElementById("enter_password");
+										//var prefix =document.getElementById("fixed");
 										var img =document.getElementById("add_alert_info");
 										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
+										//var sel_number = document.getElementById("select_number");
+										//var sel_email = document.getElementById("select_email");
 										img.src="icons/error.png";
 										img.style.display="block";
 										next.style.display = "block";
-										input1.style.display ="block";
-										sel_number.style.display ="none";
-									    sel_email.style.display ="none";
-										prefix.style.display = "none";
-										back.style.display = "block";
+										//input1.style.display ="block";
+										//sel_number.style.display ="none";
+									    //sel_email.style.display ="none";
+										//prefix.style.display = "none";
+										//back.style.display = "block";
 										document.getElementById("alert_title_text").innerHTML ="INVALID";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "Please check your number again";
-										next.innerHTML ="LOGIN";
-										back.innerHTML ="DISMISS";
-										next.setAttribute("onclick","verify_number()");
-										back.setAttribute("onclick","toggleSlider()");
-	
-}
-	
-}
-
-/*
-function login_verify(){
-
-var  x1 = document.getElementById("enter_email").value;
-var  x2 =document.getElementById("enter_password").value;
-if(x1==""||x2==""){
-										var modal_class=  document.getElementById("alerts");
-										modal_class.addEventListener("click", function(){hide_alert()}, false);
-									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAP0lEQVQYV2NkIAL8P8j+n5GQOrAi+5+MeBXCFIEMw6kQWRFOheiKsCrEpghDIS5FKArxKYIrJKQIrJAYRSCFACC1JtEjjo+nAAAAAElFTkSuQmCC) repeat";
+									    //msg.innerHTML = "Please check your number again";
+										//next.innerHTML ="LOGIN";
+										next.innerHTML ="DISMISS";
+										$('#add_alert_info').show();										
+										//next.setAttribute("onclick","verify_number()");
+										next.setAttribute("onclick","toggleSlider()");
+										//setTimeout(document.getElementById("alert_msg").innerHTML ="*INVALID* Please check your number again",1000);
 									
-										var img =document.getElementById("add_alert_info");
-										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
-										img.src="icons/error.png";
-											sel_number.style.display ="none";
-									    sel_email.style.display ="none";
-										img.style.display="block";
-										next.style.display = "block";
-										back.style.display = "block";
-										document.getElementById("alert_title_text").innerHTML ="EMPTY FIELD";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "Some field are empty.";
-										next.innerHTML ="LOGIN";
-										back.innerHTML ="DISMISS";
-										next.setAttribute("onclick","login_verify()");
-										back.setAttribute("onclick","toggleSlider()");
 	
 }
-else{
-*/	
+	
+}
+
 	
 function login_verify(){
-var  x1 = document.getElementById("enter_email").value;
-var  x2 =document.getElementById("enter_password").value;	
+var  x1 = document.getElementById("email_id").value;
+var  x2 =document.getElementById("password").value;	
 	
 	
 Parse.User.logIn(x1, x2, {
@@ -329,30 +279,37 @@ Parse.User.logIn(x1, x2, {
 										var modal_class=  document.getElementById("alerts");
 										modal_class.addEventListener("click", function(){hide_alert()}, false);
 									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
-										var img =document.getElementById("add_alert_info");
-										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
-										img.src="icons/error.png";
-										img.style.display="block";
-										input1.style.display ="none";
-										next.style.display = "block";
-										input2.style.display ="none";
-										prefix.style.display = "none";
-										sel_number.style.display ="none";
-									    sel_email.style.display ="none";
-										back.style.display = "none";
+										//var msg =  document.getElementById("alert_details");
+										//var input1 =document.getElementById("enter_email");
+										//var input2 =document.getElementById("enter_password");
+										//var prefix =document.getElementById("fixed");
+										//var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");
+										//var sel_number = document.getElementById("select_number");
+										//var sel_email = document.getElementById("select_email");
+										//img.src="icons/error.png";
+										//img.style.display="block";
+										//input1.style.display ="none";
+										//next.style.display = "block";
+										//input2.style.display ="none";
+										//prefix.style.display = "none";
+										//sel_number.style.display ="none";
+									    //sel_email.style.display ="none";
+										//back.style.display = "none";
 										document.getElementById("alert_title_text").innerHTML ="TEACHER LOGIN ONLY";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "Login facility is available for teachers only. <br> Please use our app to login as parent or student";
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAP0lEQVQYV2NkIAL8P8j+n5GQOrAi+5+MeBXCFIEMw6kQWRFOheiKsCrEpghDIS5FKArxKYIrJKQIrJAYRSCFACC1JtEjjo+nAAAAAElFTkSuQmCC) repeat";
+									    document.getElementById("code_text").innerHTML = "Login facility is available for teachers only. <br> Please use our app to login as parent or student";
+										$("#code_text").show();
+										setTimeout(function(){$('#code_text').hide();
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPElEQVQYV2NkIA4YMxKhzpiBgeEsIYVgRSDD8CmEK8KnEEURLoUYirApxKoIXSFORcgK8SqCKSSoCKQQALilCT6rrB3mAAAAAElFTkSuQmCC) repeat";
+										document.getElementById("alert_title_text").innerHTML ="LOGIN";
+										$("#add_alert_info").hide();
+										$("#code_text").hide();
+										},7000);
 										next.innerHTML ="DISMISS";
-										back.innerHTML ="BACK";
+										//back.innerHTML ="BACK";
 										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","");
+										//back.setAttribute("onclick","");
 					
 				}
 			}
@@ -363,69 +320,40 @@ Parse.User.logIn(x1, x2, {
 									var modal_class=  document.getElementById("alerts");
 									modal_class.addEventListener("click", function(){hide_alert()}, false);
 									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
+										//var msg =  document.getElementById("alert_details");
+										//var input1 =document.getElementById("enter_email");
+										//var input2 =document.getElementById("enter_password");
+										//var prefix =document.getElementById("fixed");
 										var img =document.getElementById("add_alert_info");
-										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
+										//var back = document.getElementById("back");
+										//var sel_number = document.getElementById("select_number");
+										//var sel_email = document.getElementById("select_email");
 										img.src="icons/error.png";
 										img.style.display="block";
-										input1.style.display ="none";
-										input2.style.display ="none";
-										prefix.style.display = "none";
-										sel_number.style.display ="none";
+										//input1.style.display ="none";
+										//input2.style.display ="none";
+										//prefix.style.display = "none";
+										//sel_number.style.display ="none";
 										next.style.display = "block";
-									    sel_email.style.display ="none";
-										back.style.display = "none";
+									    //sel_email.style.display ="none";
+										//back.style.display = "none";
 										document.getElementById("alert_title_text").innerHTML ="INVALID";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "Your email/number or password was incorrect.";
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAP0lEQVQYV2NkIAL8P8j+n5GQOrAi+5+MeBXCFIEMw6kQWRFOheiKsCrEpghDIS5FKArxKYIrJKQIrJAYRSCFACC1JtEjjo+nAAAAAElFTkSuQmCC) repeat";
+									    $('#email_alert').html("Your email or password was incorrect.");
+										$('#email_alert').show();
+										//msg.innerHTML = "Your email or password was incorrect.";
 										next.innerHTML ="DISMISS";
-										back.innerHTML ="CANCEL";
+										//back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										//back.setAttribute("onclick","toggleSlider()");
+										setTimeout(function(){$('#email_alert').hide();
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPElEQVQYV2NkIA4YMxKhzpiBgeEsIYVgRSDD8CmEK8KnEEURLoUYirApxKoIXSFORcgK8SqCKSSoCKQQALilCT6rrB3mAAAAAElFTkSuQmCC) repeat";
+										document.getElementById("alert_title_text").innerHTML ="LOGIN";
+										$("#add_alert_info").hide();},7000);
   }
 });
 }
-/*
-else
-{
-	
-										var modal_class=  document.getElementById("alerts");
-										modal_class.addEventListener("click", function(){hide_alert()}, false);
-									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
-										var img =document.getElementById("add_alert_info");
-										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
-										img.src="icons/error.png";
-										img.style.display="block";
-										input1.style.display ="block";
-										input2.style.display ="block";
-										sel_number.style.display ="none";
-									    sel_email.style.display ="none";
-										next.style.display = "block";
-											input2.value = "";
-										back.style.display = "block";
-										document.getElementById("alert_title_text").innerHTML ="INVALID";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "Please check your email id again";
-										next.innerHTML ="LOGIN";
-										back.innerHTML ="DISMISS";
-										next.setAttribute("onclick","login_verify()");
-										back.setAttribute("onclick","toggleSlider()");
-	
-}
 
-}
-*/
 
 function toggleSlider() {
     if ($("#alerts").is(":visible")) {
@@ -488,32 +416,38 @@ function generate_code_login(num){
 	    success:function(results){ 
 			if(results){				
 										
+										$('#login').hide();
+										$('#code_text').show();
+										$('#enter_code').show();
+										$('#alert_msg_code').hide();
+										document.getElementById("enter_code").value = "";
+										document.getElementById("alert_title_text").innerHTML ="VERIFY YOURSELF";
 										
 										var modal_class=  document.getElementById("alerts");
 										modal_class.addEventListener("click", function(){hide_alert()}, false);
 									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
+										//var msg =  document.getElementById("alert_details");
+										//var input1 =document.getElementById("enter_email");
+										//var input2 =document.getElementById("enter_password");
+										//var prefix =document.getElementById("fixed");
 										var img =document.getElementById("add_alert_info");
 										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
-										img.src="icons/info.png";
-										img.style.display="block";
-										input1.style.display ="block";
-										sel_number.style.display ="none";
+										//var sel_number = document.getElementById("select_number");
+										//var sel_email = document.getElementById("select_email");
+										//img.src="icons/info.png";
+										img.style.display="none";
+										//input1.style.display ="block";
+										//sel_number.style.display ="none";
 										next.style.display = "block";
-									    sel_email.style.display ="none";
-										input1.value = "";
-										input1.placeholder = "Code";
-										input2.style.display ="none";
-										prefix.style.display = "none";
+									    //sel_email.style.display ="none";
+										//input1.value = "";
+										//input1.placeholder = "Code";
+										//input2.style.display ="none";
+										//prefix.style.display = "none";
 										back.style.display = "block";
-										document.getElementById("alert_title_text").innerHTML ="VERIFY YOURSELF";
-										document.getElementById("alert_title").style.background = "#039be5";
-									    msg.innerHTML = "Enter the verification code sent to your number.";
+										
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPElEQVQYV2NkIA4YMxKhzpiBgeEsIYVgRSDD8CmEK8KnEEURLoUYirApxKoIXSFORcgK8SqCKSSoCKQQALilCT6rrB3mAAAAAElFTkSuQmCC) repeat";
+									    //msg.innerHTML = "Enter the verification code sent to your number.";
 										next.innerHTML ="NEXT";
 										back.innerHTML ="DISMISS";
 										next.setAttribute("onclick","logged_in_login()");
@@ -524,33 +458,26 @@ function generate_code_login(num){
 		error: function(error){console.log(error.code);
 		
 			
-			var modal_class=  document.getElementById("alerts");
-			modal_class.addEventListener("click", function(){hide_alert()}, false);
+										$('#login').hide();
+										$('#code_text').hide();
+										$('#enter_code').hide();
+										$('#alert_msg_code').hide();
+									var modal_class=  document.getElementById("alerts");
+									modal_class.addEventListener("click", function(){hide_alert()}, false);
 									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
 										var img =document.getElementById("add_alert_info");
 										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
 										img.src="icons/error.png";
 										img.style.display="block";
-										input1.style.display ="none";
-										input2.style.display ="none";
-										sel_number.style.display ="none";
 										next.style.display = "block";
-									    sel_email.style.display ="none";
-										prefix.style.display = "none";
 										back.style.display = "none";
-										document.getElementById("alert_title_text").innerHTML ="ERROR";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "Server not available please try later...";
+										document.getElementById("alert_title_text").innerHTML ="INVALID";
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAP0lEQVQYV2NkIAL8P8j+n5GQOrAi+5+MeBXCFIEMw6kQWRFOheiKsCrEpghDIS5FKArxKYIrJKQIrJAYRSCFACC1JtEjjo+nAAAAAElFTkSuQmCC) repeat";
+										
+									    $('#msg').html("Connection Failed");
+										$('#msg').show();
 										next.innerHTML ="DISMISS";
-										back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
 		}
 });
 }
@@ -583,7 +510,7 @@ function generate_code(num){
 										input2.style.display ="none";
 										back.style.display = "block";
 										document.getElementById("alert_title_text").innerHTML ="VERIFY YOURSELF";
-										document.getElementById("alert_title").style.background = "#039be5";
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPElEQVQYV2NkIA4YMxKhzpiBgeEsIYVgRSDD8CmEK8KnEEURLoUYirApxKoIXSFORcgK8SqCKSSoCKQQALilCT6rrB3mAAAAAElFTkSuQmCC) repeat";
 									    msg.innerHTML = "Enter the verification code sent to your number.";
 										next.innerHTML ="NEXT";
 										back.innerHTML ="DISMISS";
@@ -627,7 +554,7 @@ function generate_code(num){
 });
 }
 function logged_in_login(){
-code = document.getElementById("enter_email").value;
+code = document.getElementById("enter_code").value;
 code=parseInt(code);
 
 Parse.Cloud.run('verifyCod',{number:ph_number,code:code},{
@@ -636,103 +563,122 @@ Parse.Cloud.run('verifyCod',{number:ph_number,code:code},{
 			
 
 				session_token = results.sessionToken;
-				console.log(session_token);           
-				load_logged_in();
+				//console.log(session_token); 
+				if(session_token == ""){
+					console.log("session expired");
+					var back =  document.getElementById("back");
+					var next =  document.getElementById("next");	
+					var img =document.getElementById("add_alert_info");
+					img.src="icons/error.png";
+					img.style.display="block";
+					back.style.display = "block";
+					next.style.display = "none";
+					$('#alert_msg_code').html('Incorrect Code Entered/Session Expired');
+					$('#alert_msg_code').show();
+					document.getElementById("alert_title_text").innerHTML ="VERIFY YOURSELF";
+					document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAP0lEQVQYV2NkIAL8P8j+n5GQOrAi+5+MeBXCFIEMw6kQWRFOheiKsCrEpghDIS5FKArxKYIrJKQIrJAYRSCFACC1JtEjjo+nAAAAAElFTkSuQmCC) repeat";
+					back.innerHTML ="RESEND CODE";
+					back.setAttribute("onclick","generate_code_login(x1)");
+				}
+				else if(session_token != ""){
+					load_logged_in();
+				}
 				
 			}
 			else{
-				
-				
+									
+									alert("error1");
 									var modal_class=  document.getElementById("alerts");
 									modal_class.addEventListener("click", function(){hide_alert()}, false);
 									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
+										//var msg =  document.getElementById("alert_details");
+										//var input1 =document.getElementById("enter_email");
+										//var input2 =document.getElementById("enter_password");
+										//var prefix =document.getElementById("fixed");
 										var img =document.getElementById("add_alert_info");
-										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
+										//var back = document.getElementById("back");
+										//var sel_number = document.getElementById("select_number");
+										//var sel_email = document.getElementById("select_email");
 										img.src="icons/error.png";
 										img.style.display="block";
-										input1.style.display ="none";
-										prefix.style.display = "none";
+										//input1.style.display ="none";
+										//prefix.style.display = "none";
 										next.style.display = "block";
-										sel_number.style.display ="none";
-									    sel_email.style.display ="none";
-										input2.style.display ="none";
-										back.style.display = "none";
+										//sel_number.style.display ="none";
+									    //sel_email.style.display ="none";
+										//input2.style.display ="none";
+										//back.style.display = "none";
 										document.getElementById("alert_title_text").innerHTML ="CONNECTION LOST";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Please try again later";
 										next.innerHTML ="DISMISS";
-										back.innerHTML ="CANCEL";
+										//back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										//back.setAttribute("onclick","toggleSlider()");
 			}
 			
   },
-  error: function(error) {
+  error: function(error) { console.log(error.code);
+								
 									if(error.message == "USER_DOESNOT_EXISTS")
-									{
+									{console.log("error2");
+										$('#login').hide();
+										$('#code_text').hide();
+										$('#enter_code').hide();
+										$('#alert_msg_code').hide();
 									//alert(error.code + " " + error.message);
 									var modal_class=  document.getElementById("alerts");
 									modal_class.addEventListener("click", function(){hide_alert()}, false);
 									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
+										//var msg =  document.getElementById("alert_details");
+										//var input1 =document.getElementById("enter_email");
+										//var input2 =document.getElementById("enter_password");
+										//var prefix =document.getElementById("fixed");
 										var img =document.getElementById("add_alert_info");
 										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
+										//var sel_number = document.getElementById("select_number");
+										//var sel_email = document.getElementById("select_email");
 										img.src="icons/error.png";
 										img.style.display="block";
 										next.style.display = "block";
-										input1.style.display ="none";
-										input2.style.display ="none";
-										prefix.style.display = "none";
-										sel_number.style.display ="none";
-									    sel_email.style.display ="none";
+										//input1.style.display ="none";
+										//input2.style.display ="none";
+										//prefix.style.display = "none";
+										//sel_number.style.display ="none";
+									    //sel_email.style.display ="none";
 										back.style.display = "none";
 										document.getElementById("alert_title_text").innerHTML ="INVALID";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "User does not exists";
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAP0lEQVQYV2NkIAL8P8j+n5GQOrAi+5+MeBXCFIEMw6kQWRFOheiKsCrEpghDIS5FKArxKYIrJKQIrJAYRSCFACC1JtEjjo+nAAAAAElFTkSuQmCC) repeat";
+										
+									    $('#msg').html("User does not exists");
 										next.innerHTML ="DISMISS";
-										back.innerHTML ="CANCEL";
+										//back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										//back.setAttribute("onclick","toggleSlider()");
   }
-  else{
-	  var modal_class=  document.getElementById("alerts");
+  else{ console.log("error3");
+									
+										$('#login').hide();
+										$('#code_text').hide();
+										$('#enter_code').hide();
+										$('#alert_msg_code').hide();
+									var modal_class=  document.getElementById("alerts");
 									modal_class.addEventListener("click", function(){hide_alert()}, false);
 									    var next =  document.getElementById("next");									 
-										var msg =  document.getElementById("alert_details");
-										var input1 =document.getElementById("enter_email");
-										var input2 =document.getElementById("enter_password");
-										var prefix =document.getElementById("fixed");
 										var img =document.getElementById("add_alert_info");
 										var back = document.getElementById("back");
-										var sel_number = document.getElementById("select_number");
-										var sel_email = document.getElementById("select_email");
 										img.src="icons/error.png";
 										img.style.display="block";
 										next.style.display = "block";
-										input1.style.display ="none";
-										input2.style.display ="none";
-										prefix.style.display = "none";
-										sel_number.style.display ="none";
-									    sel_email.style.display ="none";
 										back.style.display = "none";
 										document.getElementById("alert_title_text").innerHTML ="INVALID";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "Code you entered was incorrect";
+										document.getElementById("alert_title").style.background = "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAP0lEQVQYV2NkIAL8P8j+n5GQOrAi+5+MeBXCFIEMw6kQWRFOheiKsCrEpghDIS5FKArxKYIrJKQIrJAYRSCFACC1JtEjjo+nAAAAAElFTkSuQmCC) repeat";
+										
+									    $('#msg').html("Connection Failed");
+										$('#msg').show();
 										next.innerHTML ="DISMISS";
-										back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+								
   }
   
   }

@@ -33,6 +33,10 @@ if (currentUser) {
 	var pic;
 	var my_class_names = [];
 	var theId;
+	var arr_email = [];
+	var arr_number = [];
+	var classname;
+
 	
 	$('#text').mouseenter(function(){
   $('#image_to_show').fadeIn();
@@ -103,6 +107,8 @@ else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < (verOffset=nAgt.lastIndexOf('/'
 	document.getElementById("eml").innerHTML = user_email;
 	document.getElementById("profile_name").innerHTML = teachername+"<br>"+display_name[0];
 	document.getElementById("teacher_name").innerHTML = teachername;
+	document.getElementById("profilename").innerHTML = teachername;
+	document.getElementById("profileusername").innerHTML = display_name[0];
 	
     $(".sending").hide();
 	generate_new_message();    								
@@ -136,6 +142,10 @@ else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < (verOffset=nAgt.lastIndexOf('/'
 		 }
 	});
 
+
+	
+	
+	
 function showmyclasses(){
  //var currentUser = Parse.User.current();
 var array=currentUser.get("Created_groups");
@@ -167,6 +177,7 @@ cnam=document.createTextNode(cnam);
 aa.appendChild(cnam);
 
 var dd= document.getElementById("class-list");
+
 
 aa.setAttribute("onclick", "new_class_token = this.id; start()");
 aa.addEventListener("click", function(){select_class(this.id)}, false);
@@ -223,6 +234,25 @@ new_class_token = cod;
 function invite_parent(){
 	toggleSlider();
 	
+											$("#alert_title").show();
+										$("#alert_title_text").show();
+										$("#alert_profile_pic").hide();
+										//$("#add_alert_info").hide();
+										$("#alert_profile").hide();
+										$("#alert_details").show();
+										$("#uplme").hide();
+										$("#btn").hide();
+										$("#enter_class_name").show();
+										$("#next").hide();
+										$("#back").hide();
+										
+		
+var dimensions = {
+'Source':'web',
+'Invite Type':'type2'
+};	
+Parse.Analytics.track('invitePageOpenings', dimensions);
+	
 $('#pop_img').remove();
 $('#pop_img1').remove();
 $('#back_button').remove();
@@ -230,14 +260,13 @@ var modal_class=  document.getElementById("alerts");
 
 var img_back=  document.getElementById("inner_alerts");
 modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
+//var next =  document.getElementById("next");									 
 var msg =  document.getElementById("alert_details");
 var input =document.getElementById("enter_class_name");
 var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
+//var back = document.getElementById("back");	
 var title = document.getElementById("alert_title_text");
-next.style.display = "none";
-back.style.display = "none";
+
 msg.style.display = "none"
 title.innerHTML = "INVITE PARENTS";
 document.getElementById("alert_title").style.background = "#039be5";
@@ -349,6 +378,48 @@ parent_container.appendChild(button2);
 img_back.appendChild(parent_container);
 }	
 
+function send_email(){
+	var class_code = messageObj.get_code();	
+	Parse.Cloud.run('inviteUsers',{classCode:class_code, type:2, data: arr_email, mode:"email"},{
+	success:function(results){
+		console.log("Invitation sent successfully");
+		/*
+		var dimensions = {
+		Source:'web',
+		Invite Type:'type2',
+		Invite Mode:'email'
+		};	
+		Parse.Analytics.track('InviteMode', dimensions);
+		*/
+		arr_email.length = 0;
+	},
+	error:function(error){
+		console.log("Sending invitation failed" + "" + error.code);
+	}
+	});	
+}
+
+function send_number(){
+	var class_code = messageObj.get_code();	
+	Parse.Cloud.run('inviteUsers',{classCode:class_code, type:2, data: arr_number, mode:"phone"},{
+	success:function(results){
+		console.log("Invitation sent successfully");
+		/*
+		var dimensions = {
+		Source:'web',
+		Invite Type:'type2',
+		Invite Mode:'phone'
+		};	
+		Parse.Analytics.track('InviteMode', dimensions);
+		*/
+		arr_number.length = 0;
+	},
+	error:function(error){
+		console.log("Sending invitation failed" + "" + error.code);
+	}
+	});	
+}
+
 function invite_parent_back(){
 
 var modal_class=  document.getElementById("alerts");
@@ -399,28 +470,46 @@ $('#back_button').remove();
 
 function add_more_email(){
 	
+	if(document.getElementById("input_2").value != ""){
 	var field = document.getElementById("input_2").value;
 	var email =  document.createElement("div");
+	email.setAttribute("id",field);
 	email.setAttribute("class","parent_email");
 	email.innerHTML = field;
+	arr_email.push(["",field]);
 	
+	var dimensions = {
+		'Source':'web',
+		'Invite Type':'type2',
+		'Invite Mode':'email'
+		};	
+		Parse.Analytics.track('InviteMode', dimensions);
 	
 	var dd= document.getElementById("msgs_invite_3");
 	dd.appendChild(email);
 	$(".parent_email").insertBefore($("#add_invitation_button_email"));
 	document.getElementById("input_2").value = "";	
+	}
+	
 }
 
 function add_more_number(){
 	
-	var field = document.getElementById("input_3").value;
-	var email =  document.createElement("div");
-	email.setAttribute("class","parent_number");
-	email.innerHTML = field;
+	var field_2 = document.getElementById("input_3").value;
+	var number =  document.createElement("div");
+	number.setAttribute("class","parent_number");
+	number.innerHTML = field_2;
+	arr_number.push(["",field_2]);
 	
+	var dimensions = {
+		'Source':'web',
+		'Invite Type':'type2',
+		'Invite Mode':'phone'
+		};	
+		Parse.Analytics.track('InviteMode', dimensions);
 	
 	var dd= document.getElementById("msgs_invite_3");
-	dd.appendChild(email);
+	dd.appendChild(number);
 	$(".parent_number").insertBefore($("#add_invitation_button_number"));
 	document.getElementById("input_3").value = "";	
 }
@@ -588,17 +677,30 @@ modal_class.appendChild(img_container);
 	}
 function settings(){
 	
-	toggleSlider();
-	var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
-input.placeholder = "Enter your registered Email address";
+											toggleSlider();
+											var modal_class=  document.getElementById("alerts");
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
+										input.placeholder = "Enter your registered Email address";
 
+										$("#alert_msg").hide();
+										$("#alertmess").hide();
+										$("#alert_title").show();
+										$("#alert_title_text").show();
+										$("#alert_profile_pic").hide();
+										$("#add_alert_info").hide();
+										$("#alert_profile").hide();
+										$("#alert_details").show();
+										$("#uplme").hide();
+										$("#btn").hide();
+										$("#enter_class_name").show();
+										$("#next").show();
+										$("#next").removeAttr('style');
 
 										img.src="icons/info.png";
 										img.style.display="block";
@@ -618,15 +720,15 @@ function check_password(){
 	new_email = document.getElementById("enter_class_name").value;
 	Parse.User.requestPasswordReset(new_email, {
   success: function() {
-	  	var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
-input.placeholder = "";
+												var modal_class=  document.getElementById("alerts");
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
+										input.placeholder = "";
 
 
 										img.src="icons/info.png";
@@ -635,8 +737,9 @@ input.placeholder = "";
 										back.style.display = "none";
 										document.getElementById("alert_title_text").innerHTML ="EMAIL SENT";
 										document.getElementById("alert_title").style.background = "#039be5";
-									    msg.innerHTML = "Please check your mail"+new_email+"for resetting your password";
+									    msg.innerHTML = "Please check your mail "+new_email+" for resetting your password";
 										next.innerHTML ="DISMISS";
+										next.style.width = "100%";
 										back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","logout()");
 										back.setAttribute("onclick","toggleSlider()");
@@ -644,28 +747,30 @@ input.placeholder = "";
   
   },
   error: function(error) {
-	  	  	var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
-input.placeholder = "";
-
+										var modal_class=  document.getElementById("alerts");
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
+										input.placeholder = "";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("DISMISS");
+										$("#btn").click(toggleSlider);
 
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
-										back.style.display = "none";
+										
 										document.getElementById("alert_title_text").innerHTML ="FAILED";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Sorry Your request cannot be completed at the moment";
-										next.innerHTML ="DISMISS";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
     
   }
 });
@@ -702,8 +807,9 @@ function toggleSlider() {
             },
             10,
 			function(){
-				$("#alert_title").slideUp(0);
-                $("#alerts").fadeOut(100);
+				
+					$("#alert_title").slideUp(0);
+					$("#alerts").fadeOut(100);
 				
             }
 
@@ -720,13 +826,55 @@ function toggleSlider() {
                 },
                 100
             );
-			$("#alert_title").slideDown(200);
+			console.log(document.getElementById("alert_title").style.display);
+			if( document.getElementById("alert_title").style.display != "none")
+				{
+				$("#alert_title").slideDown(200);
+				console.log("abc");
+				}
         });
 	
 	
 	
     }   
 }
+
+/*function toggleSidebar() {
+	
+    if ($(".page-left-container").is(":visible")){ 
+        $(".page-left-container").animate(
+		 
+            {
+                opacity: "0"
+            },
+            10,
+			function(){
+				$(".page-left-container").slideUp(0);
+                $(".page-left-container").fadeOut(100);
+				
+            }
+
+           
+           
+        );
+    }
+    else {
+      $(".page-left-container").fadeIn(10, function(){
+			
+            $(".page-left-container").animate(
+                {
+                    opacity: "1"
+                },
+                100
+            );
+			$(".page-left-container").slideDown(200);
+        });
+	
+	
+	
+    }   
+}
+*/
 
 function dates(){
 	var lastdate = new Date(datei);
@@ -777,13 +925,13 @@ Parse.Cloud.run('giveClassesDetails ',{},{
 		error: function(error){
 										toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+									modal_class.addEventListener("click", function(){hide_alert()}, false);
+									var next =  document.getElementById("next");									 
+									var msg =  document.getElementById("alert_details");
+									var input =document.getElementById("enter_class_name");
+									var img =document.getElementById("add_alert_info");
+									var back = document.getElementById("back");	
+									input.value = "";
 										img.src="icons/info.png";
 										img.style.display="block";
 										input.style.display ="block";
@@ -802,6 +950,8 @@ input.value = "";
 });	
 showlatestfeed();
 }		
+
+
 function separate_date(){
 
 this.get_date = function(timestamp){
@@ -868,7 +1018,7 @@ function showlatestfeed(){
 	pic.src = currentUser.get("pid").url();
 	}
 	
-	pro_pic = 	document.getElementsByClassName("profile-photo-modal")[0];
+	pro_pic = 	document.getElementById("alert_profile_pic");
 	pic = pro_pic.getElementsByTagName("img")[0];
 	if(typeof currentUser.get("pid") != 'undefined'){
 	pic.src = currentUser.get("pid").url();
@@ -997,24 +1147,28 @@ Parse.Cloud.run('showLatestMessagesWithLimit',{limit: "10",classtype:"c"},{
 		error:function(error){
 										toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
-										back.style.display = "none";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference:(0001)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 		}
 
 });
@@ -1144,24 +1298,28 @@ Parse.Cloud.run('showOldMessages',{date: dates(), limit: "5",classtype:"c"},{
 		error:function(error){
 										toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										
+										input.value = "";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
-										back.style.display = "none";
+										//back.style.display = "none";
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference:(0011)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 		}
 
 });
@@ -1277,24 +1435,28 @@ Parse.Cloud.run('showOldMessages',{date: dates(), limit: "5",classtype:"c"},{
 		error:function(error){
 										toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+																			 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
-										back.style.display = "none";
+										
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference:(0100)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 		}
 
 });
@@ -1349,51 +1511,75 @@ function check_name(){
  
 }
 /*To create a new Class*/
-function create_class(){
+function create_class(){				$("#alert_title").show();
 										toggleSlider();
+										
+										
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
-										img.src="icons/add_class.png";
-										img.style.display="block";
-										input.style.display ="block";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										//var input =document.getElementById("enter_class_name");
+										//var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										$("#alert_msg").hide();
+										$("#alertmess").hide();
+										$("#alert_title_text").show();
+										$("#alert_profile_pic").hide();
+										$("#add_alert_info").hide();
+										$("#alert_profile").hide();
+										$("#alert_details").show();
+										$("#uplme").hide();
+										$("#btn").hide();
+										
+										//$("#alert_title").show();
+										$("#enter_class_name").show();
+										$("#next").removeAttr('style');
+										//input.value = "";
+										//img.src="icons/add_class.png";
+										//img.style.display="none";
+										//input.style.display ="block";
 										back.style.display = "block";
-										document.getElementById("alert_title_text").innerHTML ="CREATE CLASS";
-										document.getElementById("alert_title").style.background = "#039BE5";
+										document.getElementById("alert_title_text").innerHTML ="Create a classroom.";
+										document.getElementById("alert_title").style.background = "transparent";
 									    msg.innerHTML = "Enter the class name you want to create";
-										next.innerHTML ="OK";
+										next.innerHTML ="CREATE";
 										back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","check_name()");
 										back.setAttribute("onclick","toggleSlider()");
 		
 		
 		}
-function create(){		
-if(!new_class_name){
-										
-										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
-										img.src="icons/error.png";
-										img.style.display="block";
-										input.style.display ="none";
-										back.style.display = "none";
-										document.getElementById("alert_title_text").innerHTML ="OOPS!";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference:(0101)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
+
+		
+		
+		function create(){		
+							if(!new_class_name){
+										$("#alert_msg").show();
+										$("#btn").show();
+										document.getElementById('alert_msg').innerHTML = "*Enter a class name";
+										setTimeout(function(){$('#alert_msg').hide();},3000);
+										//var modal_class=  document.getElementById("alerts");
+										//modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										//var msg =  document.getElementById("alert_details");
+										//var input =document.getElementById("enter_class_name");
+										//var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										//input.value = "";
+										//img.src="icons/error.png";
+										//img.style.display="block";
+										//input.style.display ="none";
+										//back.style.display = "none";
+										//document.getElementById("alert_title_text").innerHTML ="OOPS!";
+										//document.getElementById("alert_title").style.background = "#ffc107";
+									    //msg.innerHTML = "Please enter a class name....";
+										//next.innerHTML ="DISMISS";
+										//next.style.width = "100%";
+										//next.style.color = "#ffc107"
+										//next.style.border = "1px solid #ffc107"
+										//back.innerHTML ="CANCEL";
+										next.setAttribute("onclick","check_name()");
 										back.setAttribute("onclick","toggleSlider()");
 	}
 		else{
@@ -1429,47 +1615,53 @@ if((typeof currentUser.get("Created_groups") == 'undefined') || c == my_class_na
 						
 						var class_name = codegroup.get("name");
 						              var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/info.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										next.style.width = "100%";
 										document.getElementById("alert_title_text").innerHTML ="SUCCESS";
 										document.getElementById("alert_title").style.background = "#039BE5";
 									    msg.innerHTML = "<center>Your class "+class_name+" has been created with code<br><strong><h3> "+class_token+"</h3></strong><br> Share the above code with your students to start sending mesage to them</center>";
 										next.innerHTML ="OK";
 										back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","on_create_load()");
-										back.setAttribute("onclick","toggleSlider()");
+										back.setAttribute("onclick","toggleSlider()"); 
+										
 						
 				
 				},
 				error:function(codegroup,error){
-										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+									
+					var modal_class=  document.getElementById("alerts");
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
-										back.style.display = "none";
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference:(0110)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
+				
+				
 				
 		}
 				
@@ -1479,46 +1671,65 @@ input.value = "";
 else{
 							        	
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
-										back.style.display = "none";
+										
 										document.getElementById("alert_title_text").innerHTML ="CLASS ALREADY EXISTS";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "You already have a class with the same name<br> please try another name ";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","create_again()");
-										back.setAttribute("onclick","toggleSlider()");
+										$("#btn").click(create_again);
+										//next.setAttribute("onclick","create_again()");
+										//back.setAttribute("onclick","toggleSlider()");
 										
 }
 }		
 }
 function create_again(){
 
+										$("#alert_title").show();
+										
+										
+										
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
-										img.src="icons/add_class.png";
-										img.style.display="block";
-										input.style.display ="block";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										//var input =document.getElementById("enter_class_name");
+										//var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										$("#alert_msg").hide();
+										$("#alertmess").hide();
+										$("#alert_title_text").show();
+										$("#alert_profile_pic").hide();
+										$("#add_alert_info").hide();
+										$("#alert_profile").hide();
+										$("#alert_details").show();
+										$("#uplme").hide();
+										$("#btn").hide();
+										//$("#alert_title").show();
+										$("#enter_class_name").show();
+										$("#next").removeAttr('style');
+										//$("#next").removeAttr('style');
+										//input.value = "";
+										//img.src="icons/add_class.png";
+										//img.style.display="none";
+										//input.style.display ="block";
 										back.style.display = "block";
-										document.getElementById("alert_title_text").innerHTML ="CREATE CLASS";
-										document.getElementById("alert_title").style.background = "#039BE5";
+										document.getElementById("alert_title_text").innerHTML ="Create a classroom.";
+										document.getElementById("alert_title").style.background = "transparent";
 									    msg.innerHTML = "Enter the class name you want to create";
-										next.innerHTML ="OK";
+										next.innerHTML ="CREATE";
 										back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","check_name()");
 										back.setAttribute("onclick","toggleSlider()");
@@ -1674,14 +1885,14 @@ function del_class(){
 					    success:function(flag){
 									
 									if(flag==true){
-									  var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-									   input.value = "";
+										var modal_class=  document.getElementById("alerts");
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/info.png";
 										img.style.display="block";
 										input.style.display ="none";
@@ -1690,11 +1901,12 @@ var back = document.getElementById("back");
 										document.getElementById("alert_title").style.background = "#039be5";
 									    msg.innerHTML = "Your class has been deleted";
 										next.innerHTML ="OK";
+										next.style.width = "100%";
 										back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","showlatestfeed()");
 										back.setAttribute("onclick","toggleSlider()");
-									   destroy_class(id);
-									   destroy_message();
+										   destroy_class(id);
+										   destroy_message();
 									   
 									 
 										
@@ -1705,24 +1917,29 @@ var back = document.getElementById("back");
 							},
 		error:function(error){ 
 					                  var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
-										back.style.display = "none";
+										
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference: (1000)"+error.code;
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+									
+										
 							}
 			
 			
@@ -1769,46 +1986,64 @@ function delete_class(){
 				if(!id){               
 										toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="SELECT A CLASS";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "You need to select a class to delete it.";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 						}
 				else{
 				class_id = id;
 				/*alert(class_code);*/
 										toggleSlider();
+										
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
-										img.src="icons/error.png";
-										img.style.display="block";
-										input.style.display ="none";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										//var msg =  document.getElementById("alert_details");
+										//var input =document.getElementById("enter_class_name");
+										//var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										//input.value = "";
+										$("#alert_msg").hide();
+										$("#alertmess").hide();
+										$("#alert_title").show();
+										$("#alert_title_text").show();
+										$("#alert_profile_pic").hide();
+										$("#add_alert_info").hide();
+										$("#alert_profile").hide();
+										$("#alert_details").show();
+										$("#uplme").hide();
+										$("#btn").hide();
+										$("#enter_class_name").hide();
+										$("#next").show();
+										$("#next").removeAttr('style');
+										//img.src="icons/error.png";
+										//img.style.display="block";
+										//input.style.display ="none";
 										back.style.display = "block";
 										document.getElementById("alert_title_text").innerHTML ="ARE YOU SURE?";
-										document.getElementById("alert_title").style.background = "#ffc107";
-									     msg.innerHTML = "Your class with <b> CODE: "+class_id+" </b> will be <b>Deleted Permanently</b>.<br> This action cannot be reversed.";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
+										document.getElementById("alert_title").style.background = "transparent";
+									    $("#alert_details").html("Your class with <b> CODE: "+class_id+" </b> will be <b>Deleted Permanently</b>.<br> This action cannot be reversed.");
+										next.innerHTML ="YES";
+										back.innerHTML ="NO";
 										next.setAttribute("onclick","del_class()");
 										back.setAttribute("onclick","toggleSlider()");
 										
@@ -1840,24 +2075,28 @@ var child_name = obj.getElementsByTagName("span")[0].innerHTML;
 
 										toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "block";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(remove_user);	
+										
 										document.getElementById("alert_title_text").innerHTML ="ARE YOU SURE?";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML ="<b>"+child_name+"</b> will be <b>Removed Permanently</b> from your class<b> "+c_name+"</b> with code: <b>"+c_code+".</b><br> This action cannot be reversed.";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","remove_user()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 										del_obj = ele;
 
 }	  
@@ -1896,22 +2135,24 @@ if(type[1]=="app"){
 								if(results==true){
 										destroy_suscriber(id);
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/info.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										
 										document.getElementById("alert_title_text").innerHTML ="SUCCESS";
 										document.getElementById("alert_title").style.background = "#039BE5";
 									    msg.innerHTML ="User Deleted.";
 										next.innerHTML ="OK";
 										back.innerHTML ="CANCEL";
+										next.style.width = "100%"
 										next.setAttribute("onclick","toggleSlider()");
 										back.setAttribute("onclick","toggleSlider()");
 										}
@@ -1920,24 +2161,28 @@ input.value = "";
 									
 										
 									var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference: (1001)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 						}
 						});
 		
@@ -1952,13 +2197,13 @@ Parse.Cloud.run('removeMember ',{classname: c_name , classcode: c_code, number: 
 								{
 								      		destroy_suscriber(id);
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/info.png";
 										img.style.display="block";
 										input.style.display ="none";
@@ -1968,6 +2213,7 @@ input.value = "";
 									    msg.innerHTML ="User Deleted.";
 										next.innerHTML ="OK";
 										back.innerHTML ="CANCEL";
+										next.style.width = "100%"
 										next.setAttribute("onclick","toggleSlider()");
 										back.setAttribute("onclick","toggleSlider()");
 								
@@ -1978,24 +2224,28 @@ input.value = "";
 									
 								       
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference: (1010)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 									
 									
 						}
@@ -2019,25 +2269,29 @@ query.find({
 		},
 		error:function(error){
 										toggleSlider();
-									var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										var modal_class=  document.getElementById("alerts");
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference: (1011)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 		
 		}
 		});
@@ -2192,24 +2446,28 @@ Parse.Cloud.run('showSubscribers', {classcode: class_code, date: d2},{
 		error:function(error){
 			toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference: (1100)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 		}
 
 });
@@ -2354,15 +2612,15 @@ function class_message(class_code){
 			},
 			error: function(error){
 			
-			toggleSlider();
-			var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+													toggleSlider();
+													var modal_class=  document.getElementById("alerts");
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
@@ -2452,27 +2710,34 @@ document.getElementById("display_code").innerHTML="Class-code";
 			document.getElementById("box-content").innerHTML=new_class_token;
 			document.getElementsByClassName('copy-tag')[0].innerHTML="Click to copy";
 		  document.getElementById("subscriber-count").innerHTML="0";
+		  
 
 		document.getElementById( "showmore" ).setAttribute( "onclick", "show_each_old()" );
         destroy_message();
 		class_message(new_class_token);
 		messageObj.return_code(new_class_token);	
+		
 	
 						
 	}
 	
 	
 	
+	
+	
 function start()
 {
-
 if(messageObj.return_code(new_class_token)){
 var p_class_code = messageObj.get_code(new_class_token);	
-destroy_class(p_class_code);}
+destroy_class(p_class_code);
+}
 document.getElementById("subscriber-count-container1").style.display = "block";
 
 document.getElementById(new_class_token).style.background = "#1C87A0";
 
+console.log(messageObj.get_name());
+document.getElementById("classname").innerHTML = messageObj.get_name();
+console.log(messageObj.get_name());
 
 query_code_name(new_class_token);
 document.getElementById("display_code").innerHTML="Class-code";	
@@ -2496,24 +2761,31 @@ function send(){
 		if (msg.length==0) {					
 										toggleSlider();
 									var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="EMPTY MESSAGE";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Please type a message you want to send<br>(else insert an attachment)";
-										next.innerHTML ="OK";
+										/*next.innerHTML ="OK";
 										back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										back.setAttribute("onclick","toggleSlider()");*/
 										$(".sending").hide();
 									    document.getElementById('send_button').disabled=false;
 										
@@ -2532,24 +2804,28 @@ input.value = "";
 		error:function(error){
 										toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference: (1110)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 		}
 
 });
@@ -2613,24 +2889,26 @@ if ('files' in x) {
 		error:function(error){
 										toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+										
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference: (1111)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
 		}
 
 });
@@ -2638,24 +2916,28 @@ input.value = "";
 }, function(error) {
 										toggleSlider();
 										var modal_class=  document.getElementById("alerts");
-modal_class.addEventListener("click", function(){hide_alert()}, false);
-var next =  document.getElementById("next");									 
-var msg =  document.getElementById("alert_details");
-var input =document.getElementById("enter_class_name");
-var img =document.getElementById("add_alert_info");
-var back = document.getElementById("back");	
-input.value = "";
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										var msg =  document.getElementById("alert_details");
+										var input =document.getElementById("enter_class_name");
+										var img =document.getElementById("add_alert_info");
+										var back = document.getElementById("back");	
+										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
+																				
+										$("#next").hide();
+										$("#back").hide();
+										$("#btn").show();
+										$("#btn").html("OK");
+										$("#btn").click(toggleSlider);
+										
 										document.getElementById("alert_title_text").innerHTML ="OOPS!";
 										document.getElementById("alert_title").style.background = "#ffc107";
 									    msg.innerHTML = "Connection Lost<br>Please try later....<br>reference: (1000)";
-										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
-										next.setAttribute("onclick","toggleSlider()");
-										back.setAttribute("onclick","toggleSlider()");
+										
   
 });
 		
@@ -2718,9 +3000,54 @@ $('#dd').removeAttr('onclick');
 	
 }
 }
-function hide_profile(){
-		
+
+function view_profile(){	
+										document.getElementById("alert_title").style.display = "none";
+										console.log(document.getElementById("alert_title").style.display);
+										toggleSlider();
+										var modal_class=  document.getElementById("alerts");
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
+										//var next =  document.getElementById("next");									 
+										//var msg =  document.getElementById("alert_details");
+										//var input =document.getElementById("enter_class_name");
+										//var img =document.getElementById("add_alert_info");
+										//var back = document.getElementById("back");	
+										//input.value = "";
+										//img.src="icons/info.png";
+										//img.style.display="block";
+										//input.style.display ="none";
+										//back.style.display = "none";										
+										//console.log(document.getElementById("alert_title").style.display);
+										
+										$("#alertmess").hide();
+										$("#uplme").hide();
+										$("#alert_title_text").hide();
+										$("#alert_title").hide();
+										$("#btn").hide();
+										
+										$("#alert_details").hide();
+										$("#alert_profile_pic").show();
+										$("#alert_profile").show();
+										
+										$("#enter_class_name").hide();
+										$("#add_alert_info").hide();
+										$("#alert_title").hide();
+										
+										$("#back").hide();
+										$("#next").hide();
+										$("#alert_details").hide();
+										//document.getElementById("alert_title_text").innerHTML ="SUCCESS";
+										
+									    //msg.innerHTML ="";
+										//next.innerHTML ="OK";
+										//back.innerHTML ="CANCEL";
+										//next.setAttribute("onclick","toggleSlider()");
+										//back.setAttribute("onclick","toggleSlider()");
+	
 }
+
+
+
 function logout(){
 		Parse.User.logOut();
 		var currentUser = Parse.User.current(); 
@@ -2812,7 +3139,20 @@ if(document.getElementById(idd)){
 document.getElementById(idd).style.display="none";
 }
 }
-$("#modalpic").modal('show');
+//$("#modalpic").modal('show');
+$("#alert_profile_pic").hide();
+$("#alert_profile").hide();
+$("#alert_details").hide();
+$("#uplme").show();
+$("#back").show();
+$("#next").show();
+$("#next").html("CONFIRM");
+$("#back").html("CANCEL");
+$("#alert_title").show();
+$("#alert_title_text").show();
+$("#alert_title_text").html("Change Profile Pic");
+document.getElementById("next").setAttribute("onclick","changp()");
+document.getElementById("back").setAttribute("onclick","toggleSlider()");
 }
 
 	
@@ -2833,8 +3173,8 @@ name2=name.split('fakepath\\')[1];
 }
 if((name2.indexOf("jpg") > -1)||(name2.indexOf("png") > -1)||(name2.indexOf("jpeg") > -1)||(name2.indexOf("gif") > -1)||(name2.indexOf("bpm") > -1))
 {
-var fors=document.getElementById('forupl');
-fors.disabled=true;
+var fors=document.getElementById('next');
+//fors.disabled=true;
 document.getElementById('att2').disabled=true;
 fors.innerHTML="uploading image";
 name2=name2.replace(/[^a-z0-9\_\.\-]/ig,"");
@@ -2853,11 +3193,12 @@ x.appendChild(cc);
 picat=1;
 $("#pickr").hide();
 $("#pickr1").hide();
-fors.disabled=false;
+//fors.disabled=false;
 document.getElementById('att2').disabled=false;
-fors.innerHTML="Confirm";
+fors.innerHTML="CONFIRM";
 }, function(error) {
-$("#alertmess").text(" successfully attached");
+$("#alertmess").show();
+$("#alertmess").html(" successfully attached");
 }
 );
 }
@@ -2883,9 +3224,10 @@ picat=0;
 $("#att2").val("");
 $("#pickr").show();
 $("#pickr1").show();
-$('#modalpic').modal('hide');
+//$('#modalpic').modal('hide');
 }
 function changp(){
+	console.log("changp");
  var currentUser = Parse.User.current();
 if(picat==1){
 $("#loading").show();
@@ -2910,9 +3252,14 @@ alert(rat);
 alert(error.code+'no'+error.message);
   }
 });
-$("#modalpic").modal('hide');
- $("#alertmess").text("Your Profile pic changed");
-$("#sentnotif").show();
+$("#alertmess").show();
+$("#alertmess").html("Your Profile pic changed");
+//$("#sentnotif").show();
+$("#uplme").hide();
+$("#alert_title_text").hide();
+$("#next").html("OK");
+document.getElementById("next").setAttribute("onclick","toggleSlider()");
+document.getElementById("back").setAttribute("onclick","toggleSlider()");
 
 window.setTimeout('$("#sentnotif").hide();', 5000);
   },
@@ -2937,6 +3284,14 @@ $("#EditSach").click();
 }
 }
 }
+
+function show_sidebar(){
+//var sidebar = document.getElementsByClassName("page-left-container");
+//sidebar.style.display = "block";	
+$(".page-left-container").show();
+}	
+
+
 
 		
 } 
