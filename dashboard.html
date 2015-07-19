@@ -4,6 +4,9 @@
 		 <meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>My Classroom</title>
+		
+		<link rel="shortcut icon" href="favicon_16.ico" type="image/x-icon"/>
+    <link rel="bookmark" href="favicon_16.ico" />
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         
@@ -43,6 +46,7 @@ Parse.User.enableRevocableSession();
  </script>
 
 <script type="text/javascript" src="js/load1.js"></script>
+
 
 		<style>		
 		
@@ -145,6 +149,41 @@ float:right;
 				<img id="add_alert_info" src="" width="25px" />
 				<div id="alert_title_text"></div>
 			</div>
+			
+							<div id="invite" class="reg-form">
+								<div class="choose-type active" data-show="via-email" style="text-align:center;font-family: Lato-regular">Send Invitation via Email</div>
+								<div class="choose-type inactive" data-show="via-sms" style="text-align:center;font-family: Lato-regular">Send Invitation vis SMS</div>
+								<p style="text-align:center;font-family:Gotham-Light;font-size:20px;margin-bottom: 0px;"> Invite parents to join</p> <p id="invite_class" style="text-align:center;font-family:Gotham-Light;font-size:20px;margin-bottom: 0px;"></p>
+								<div id="via-email" class="home-reg-content">
+								<div class="input-group">
+								<label style="margin-left: 12.5%;">Enter emails separated by comma.</label>
+								<textarea ng-model="invitations.recipients" name="emails-numbers" id="invite-parents-emails" rows="6" placeholder="example@example.com, another@example.com" ng-if="!group.subscribe.sms" style=""></textarea>
+								<button class="send_btn" onclick="send_email()">Send Invitation</button></a>
+								
+								</div>
+								</div>
+								
+								<div id="via-sms" class="home-reg-content">
+									<div class="input-group">
+									<label style="margin-left: 11.5%;">Enter mobile numbers separated by comma.</label>
+									<textarea ng-model="invitations.recipients" name="emails-numbers" id="invite-parents-numbers" rows="6" placeholder="9898989898,7676767676" ng-if="!group.subscribe.sms" style=""></textarea>
+									<button class="send_btn_2" onclick="send_number()">Send Invitation</button></a>
+									
+									</div>
+								</div>
+								<p style="font-family: Lato-regular;margin-bottom:0px;color:green" id="success_alert"></p>
+								<div id="msgs_invite">Recommended</div>
+								<div id="download_button" onclick="mail()">Recieve instructions on Email</div>
+								<div id="parents_see" onclick="show_gif()">How parents will see...???</div>
+								
+							</div>
+							
+							<div id="gif">
+							<img id="pop_img" src="img/ezgif.com-crop.gif" height="60px" width="60px">
+							<img id="pop_img1" src="img/ezgif.com-resize.gif" height="60px" width="60px">
+							</div>
+							
+							
 			<div id="alert_details"></div>
 			<div id="alert_profile_pic"><p style="text-align:center;font-family:Gotham-Light;font-size:30px;margin-bottom:10%">Your Profile</p><img id="profile_pic_img_pp" src="" />
 					</div>
@@ -194,7 +233,10 @@ float:right;
 	</div>
 	
 	
-	<div style="position:fixed;width:100%;z-index:999">
+	<div style="position:fixed;width:100%;z-index:999;box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    -o-box-shadow: 0 0 8px rgba(0,0,0,0.3);">
 		<nav class="navbar">
 		  <div class="container-fluid">
 		  <button type="button" class="btn btn-default btn-lg" style="float:left" id="sidebar">
@@ -217,9 +259,9 @@ float:right;
 					<div><p id= "profilename"></p> </div>
 					<div><p id="profileusername"></p></div>
 					<!--div><a href="#" data-toggle="modal" data-target="#myModal2"><i class="icon-user"></i>Profile</a></div-->
-					<div><a onclick="view_profile()"><i class="icon-user"></i>Profile</a></div>
-					<div><a onclick="settings()" ><i class="icon-cog" ></i>Reset Password</a></div>
-					<div><a onclick="logout()" ><i class="icon-remove"></i>Log out</a></div>
+					<div><a onclick="view_profile()" class="menu"><i class="icon-user"></i>Profile</a></div>
+					<div><a onclick="settings()" class="menu" ><i class="icon-cog" ></i>Reset Password</a></div>
+					<div><a onclick="logout()" class="menu"><i class="icon-remove"></i>Log out</a></div>
 				</div>
 				</div>
 			</div>
@@ -252,7 +294,7 @@ float:right;
 				<div id="form-wrapper" class="col-xs-12 col-sm-12">
 					
 					<div type="text" class="add-class col-xs-12 col-sm-12">
-					<div style="position:absolute;float:left;padding-left: 10px;padding-top: 10px;font-size: px;font-family: Lato-regular;  };font-weight: bold;">To</div>
+					<div style="position:absolute;float:left;padding-left: 10px;padding-top: 10px;font-size: px;font-family: Lato-regular;font-weight: bold;">To</div>
 					<div  id="base" ></div>
 					
 						<div id="classname"></div>
@@ -267,7 +309,7 @@ float:right;
 					<div class="upload" onmouseout="back_attach()"onmouseover="highlight_attach()"><input type="file"accept="image/*" onChange="load_image(this.id,this.value,this)" class="upload1" name="attachment" id="attachment" style="float:left;" ></input>
 					</div><img id="attachment_name" src="#" alt="your image" />
 						
-						<input type="button" id="send_button" class="knit-btn2" onmouseout ="border_back()" onmouseover ="border_hover()"style="float:right;margin-right:20px;"value="Send"onclick="send_with_picture();"></input>
+						<input type="button" id="send_button" class="knit-btn2" onmouseout ="border_back()" onmouseover ="border_hover()"style="float:right;margin-right:20px;border-radius:3px"value="Send"onclick="send_with_picture();"></input>
 			            <div class="sending"></div>
 					</div>
 				</div>
@@ -502,6 +544,9 @@ document.getElementById("cc2").className="glyphicon glyphicon-pencil";
     
 	
 	</script>
+	
+	
+	
 	<script> 
 $(document).ready(function(){
     $("#sidebar").click(function(){
@@ -521,9 +566,18 @@ else
 });
 </script> 
 
-
+<script>
+$('#invite .choose-type').click(function(){
+        $('#invite .choose-type').removeClass('active');    
+        $('#invite .choose-type').addClass('inactive');   
+        $('#invite .home-reg-content').hide();
+        var show_id = $(this).data('show');        
+        $('#'+show_id).show(); 
+        $(this).removeClass('inactive');
+        $(this).addClass('active');
+    });
+	</script>
 	
-
 
 	</body>
 </html>

@@ -8,8 +8,14 @@
 	src: url(fonts/GothamLight.ttf);
 }
 
+@font-face{
+	font-family: proxima-nova;
+	src: url(fonts/ProximaNova-Reg.ttf);
+}
+
 body{
 	font-family: Lato-regular;
+	background-color:rgb(236, 242, 245);
 
 }
 
@@ -50,6 +56,12 @@ margin-bottom:0px;
 	padding-left: 0px;
 	  border: 1px solid #dcdcdc;
 	  display:none;
+	    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  -o-box-shadow: 0 0 10px rgba(0,0,0,0.0.15);
+  border-radius: 3px;
+    background-color: white;
 }
 
 #form-wrapper .add-class{
@@ -164,7 +176,7 @@ border:2px solid #2eb9f6;
 }
 
 .feed-date{
-	background-color: white;
+	background-color: rgb(236, 242, 245);
   width: 119px;
   /* margin: -8px auto 6px auto; */
   margin: auto;
@@ -261,6 +273,7 @@ display:none;
     position: initial;
 	float:left;
     width: 40px;
+	  margin-right: 20px;
 	
 }
 #base:before {
@@ -542,13 +555,17 @@ color:white;
   }
   
  #classname{
- margin-left: 60px;
-  width: 100px;
+ /*margin-left: 60px;*/
+ /* width: 100px;*/
   background-color: #dcdcdc;
   height: 40px;
   text-align: center;
   padding-top: 10px;
     font-weight: bold;
+	  float: left;
+  padding-left: 20px;
+  padding-right: 20px;
+    border: 1px solid #f8f8f8;
 
   }
 
@@ -598,7 +615,7 @@ color:white;
   position: absolute;
   width: 41%;
   /*max-width:50%;*/
-  margin-top: 10%;
+  margin-top: 5%;
   margin-left: 30%;
   background-color: #f8f8f8;
 }
@@ -714,9 +731,11 @@ padding-top:5px;
 
 /* Hover state */
 
-.wrapper-dropdown-5 .dropdown div:hover a {
-    color: #57a9d9;
+.wrapper-dropdown-5 .dropdown .menu:hover  {
+    background-color: #57a9d9;
 }
+
+
 
 /* Active state */
 
@@ -752,7 +771,7 @@ padding-top:5px;
 	
 	
 .page-center-container{
-margin-top:4.5%;
+margin-top:5.5%;
 }
 .left-header{
 	  width: 100%;
@@ -1076,7 +1095,7 @@ color:red;
   text-align: center;
   border: 1px solid rgb(3, 155, 229);
   /* border-radius: 6px; */
-  border-left-color: transparent;
+  
   -moz-border-radius: 6px;
   /* -webkit-border-radius: 6px; */
   background-color: white;
@@ -1100,6 +1119,7 @@ color:red;
   /* -webkit-border-radius: 6px; */
   background-color: white;
   font-family: Lato-regular;
+  border-right-color: transparent;
 }
 
 #back:hover{
@@ -1140,6 +1160,85 @@ border:1px solid #37474F;
 color:white;
 }
 
+.choose-type{
+  display: inline-block;
+  padding: 10px 40px; 
+  font-family: Avenir-regular;
+  font-size:15px;
+}
+
+.choose-type.active{
+  cursor: pointer;
+  width:49.5%;
+ /* border-bottom: 2px solid gray;*/
+  
+  color: rgb(3, 155, 229);
+  font-family: Avenir-bold;
+}
+
+.choose-type.inactive{
+  cursor: pointer;
+  width:50%;
+ /* border-bottom: 2px solid rgb(208, 208, 208);*/
+  color: #999999;
+  font-family: Avenir-regular;
+  background-color: #e1e3e5;
+}
+
+#invite-parents-emails{
+width:90%;
+margin-left:12.5%;
+/*margin-top:10%;*/
+}
+
+#invite-parents-numbers{
+width:80%;
+margin-left:11.5%;
+/*margin-top:10%;*/
+}
+
+.send_btn{
+  border: 1px solid #f8f8f8;
+  background-color: #13647f;
+  color: white;
+ /* border: 1px solid rgb(3, 155, 229);
+  background-color: white;
+  color: rgb(3, 155, 229);*/
+  border-radius: 5px;
+   max-width: 90%;
+  width: 90%;
+  margin-left:12.5%;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  font-size:15px;
+}
+
+.send_btn:hover{
+background-color:#37474F;
+border:1px solid #37474F;
+color:white;
+}
+
+.send_btn_2{
+  border: 1px solid #f8f8f8;
+  background-color: #13647f;
+  color: white;
+ /* border: 1px solid rgb(3, 155, 229);
+  background-color: white;
+  color: rgb(3, 155, 229);*/
+  border-radius: 5px;
+  width: 80%;
+  margin-left: 11.5%;
+  padding-top: 2.7%;
+  padding-bottom: 2.5%;
+  font-size:15px;
+}
+
+.send_btn_2:hover{
+background-color:#37474F;
+border:1px solid #37474F;
+color:white;
+}
 
 #alert_details{
 
@@ -1264,7 +1363,7 @@ display:none;
 #profile_pic_img{
 width:120px;
 height:120px;
-margin-top:5%;
+margin-top:15%;
 border-radius:60px;
 -webkit-border-radius:60px;
 -webkit-box-flex:1;
@@ -1638,12 +1737,11 @@ border:1px solid #039be5;
 #input_2:focus{
 border:1px solid #039be5;
 }
-#msgs_invite_2{
+#parents_see{
 margin-top:2%;
 padding-bottom:2%;
-float:left;
-margin-left:39%;
 text-align:center;
+cursor:pointer;
 }
 
 #text{
@@ -1693,19 +1791,27 @@ padding-top:10px;
 background-color:#DDDDDD;
 width:200px;
 border:none;
-margin-left:38%;
+margin-left:32%;
 text-align:center;
-float:left;
+  cursor: pointer;
+/*float:left;*/
 }
+
+#download_button:hover {
+  background-color: #999999;
+  color: white;
+}
+
 .invite_parents{
 cursor:pointer;
 margin-right:15%;
 }
 #msgs_invite{
 margin-top: 2%;
-margin-left:40%;
+/*margin-left:40%;*/
 font-size:25px;
-float:left;
+/*float:left;*/
+text-align:center;
 }
 
 #pop_img{

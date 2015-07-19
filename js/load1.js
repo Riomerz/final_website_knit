@@ -102,6 +102,9 @@ else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < (verOffset=nAgt.lastIndexOf('/'
 		
 	currentUser.fetch();
 	
+		var hide = document.getElementById("via-sms");
+	hide.style.display = "none";
+	
 	document.getElementById("Sach").innerHTML = teachername;
 	document.getElementById("phn").innerHTML = display_name[0];
 	document.getElementById("eml").innerHTML = user_email;
@@ -188,6 +191,13 @@ $("#cod").insertAfter($("#class_room"));
 }
 }
 new_class_token = cod;
+
+$("#class-list > div").click(function(event) {
+    console.log($(this).html());
+	document.getElementById("classname").innerHTML = $(this).html();
+	document.getElementById("invite_class").innerHTML = $(this).html();
+		})
+	
 }
 	
 	
@@ -230,22 +240,40 @@ new_class_token = cod;
 	
 	}
 		
+		
+function mail(){
+	Parse.Cloud.run('mailPdf',{email:user_email, name:teachername},{
+	success:function(results){
+		console.log("email sent successfully");
+		},
+	error:function(error){
+		console.log("Sending email failed" + "" + error.code);
+	}
+	});	
+	
+}		
 
 function invite_parent(){
 	toggleSlider();
+		
+											var modal_class=  document.getElementById("alerts");
+										modal_class.addEventListener("click", function(){hide_alert()}, false);
 	
-											$("#alert_title").show();
+										$("#alert_title").hide();
 										$("#alert_title_text").show();
 										$("#alert_profile_pic").hide();
-										//$("#add_alert_info").hide();
+										$("#add_alert_info").hide();
 										$("#alert_profile").hide();
-										$("#alert_details").show();
+										$("#alert_details").hide();
 										$("#uplme").hide();
 										$("#btn").hide();
-										$("#enter_class_name").show();
+										$("#enter_class_name").hide();
 										$("#next").hide();
 										$("#back").hide();
-										
+										$("#gif").hide();
+										$("#invite").show();
+
+									
 		
 var dimensions = {
 'Source':'web',
@@ -256,8 +284,10 @@ Parse.Analytics.track('invitePageOpenings', dimensions);
 $('#pop_img').remove();
 $('#pop_img1').remove();
 $('#back_button').remove();
-var modal_class=  document.getElementById("alerts");
 
+
+
+/*
 var img_back=  document.getElementById("inner_alerts");
 modal_class.addEventListener("click", function(){hide_alert()}, false);
 //var next =  document.getElementById("next");									 
@@ -377,12 +407,25 @@ parent_container.appendChild(para);
 parent_container.appendChild(button2);
 img_back.appendChild(parent_container);
 }	
-
+*/
+/*
+document.getElementById("invite").appendChild(msgs);
+document.getElementById("invite").appendChild(download);
+document.getElementById("invite").appendChild(msgs2);
+*/
+}
 function send_email(){
+	
+	var value = document.getElementById("invite-parents-emails").value;
+	var emails = value.split(',');
+	for (var i = 0, limit = emails.length; i < limit; i++){arr_email.push(["",emails[i]]);}
 	var class_code = messageObj.get_code();	
 	Parse.Cloud.run('inviteUsers',{classCode:class_code, type:2, data: arr_email, mode:"email"},{
 	success:function(results){
 		console.log("Invitation sent successfully");
+		$("#success_alert").show();
+		document.getElementById('success_alert').innerHTML = "Invitation sent successfully...";
+		setTimeout(function(){$('#success_alert').hide();},3000);
 		/*
 		var dimensions = {
 		Source:'web',
@@ -400,10 +443,17 @@ function send_email(){
 }
 
 function send_number(){
+	
+	var value = document.getElementById("invite-parents-numbers").value;
+	var numbers = value.split(',');
+	for (var i = 0, limit = numbers.length; i < limit; i++){arr_number.push(["",numbers[i]]);}
 	var class_code = messageObj.get_code();	
 	Parse.Cloud.run('inviteUsers',{classCode:class_code, type:2, data: arr_number, mode:"phone"},{
 	success:function(results){
 		console.log("Invitation sent successfully");
+		$("#success_alert").show();
+		document.getElementById('success_alert').innerHTML = "Invitation sent successfully...";
+		setTimeout(function(){$('#success_alert').hide();},3000);
 		/*
 		var dimensions = {
 		Source:'web',
@@ -467,7 +517,7 @@ $('#pop_img').remove();
 $('#pop_img1').remove();	
 $('#back_button').remove();
 }
-
+/*
 function add_more_email(){
 	
 	if(document.getElementById("input_2").value != ""){
@@ -513,10 +563,17 @@ function add_more_number(){
 	$(".parent_number").insertBefore($("#add_invitation_button_number"));
 	document.getElementById("input_3").value = "";	
 }
+*/
 
 function show_gif(){
-
-var modal_class=  document.getElementById("alerts");
+	var modal_class=  document.getElementById("alerts");
+	modal_class.addEventListener("click", function(){hide_alert()}, false);
+$("#invite").hide();
+$("#gif").show();
+$("#pop_img").show();
+$("#pop_img1").show();
+}
+/*var modal_class=  document.getElementById("alerts");
 
 var img_back=  document.getElementById("inner_alerts");
 modal_class.addEventListener("click", function(){hide_alert()}, false);
@@ -576,8 +633,8 @@ parent_container.appendChild(Img);
 parent_container.appendChild(Img1);
 parent_container.appendChild(button3);
 img_back.appendChild(parent_container);
+*/
 
-}
 
 
 function close_invite(){
@@ -656,10 +713,7 @@ modal_class.appendChild(img_container);
 										img.src="icons/info.png";
 										img.style.display="none";
 										input.style.display ="none";
-										back.style.display = "none";
-										
-										
-									   
+										back.style.display = "none";				
 										next.innerHTML ="DISMISS";
 										back.innerHTML ="CANCEL";
 										next.setAttribute("onclick","hide_img()");
@@ -687,7 +741,9 @@ function settings(){
 										var back = document.getElementById("back");	
 										input.value = "";
 										input.placeholder = "Enter your registered Email address";
-
+										
+										$("#invite").hide();
+										$("#gif").hide();
 										$("#alert_msg").hide();
 										$("#alertmess").hide();
 										$("#alert_title").show();
@@ -1479,6 +1535,12 @@ $("#"+ele).remove();
 function destroy_class(class_code){
 
 $("#"+class_code).remove();
+/*$("#box-content").hide();
+$("#copy-tag").hide();
+$("#display_code").hide();
+$("#profile_pic").show();
+$("#profile_name").show();
+$("#delete-class-btn").hide();*/
 document.getElementById("box-content").innerHTML="";
 document.getElementsByClassName('copy-tag')[0].innerHTML="";
 document.getElementById("display_code").innerHTML="";
@@ -1522,6 +1584,8 @@ function create_class(){				$("#alert_title").show();
 										//var input =document.getElementById("enter_class_name");
 										//var img =document.getElementById("add_alert_info");
 										var back = document.getElementById("back");	
+										$("#invite").hide();
+										$("#gif").hide();
 										$("#alert_msg").hide();
 										$("#alertmess").hide();
 										$("#alert_title_text").show();
@@ -1708,6 +1772,8 @@ function create_again(){
 										//var input =document.getElementById("enter_class_name");
 										//var img =document.getElementById("add_alert_info");
 										var back = document.getElementById("back");	
+										$("#invite").hide();
+										$("#gif").hide();
 										$("#alert_msg").hide();
 										$("#alertmess").hide();
 										$("#alert_title_text").show();
@@ -1907,6 +1973,7 @@ function del_class(){
 										back.setAttribute("onclick","toggleSlider()");
 										   destroy_class(id);
 										   destroy_message();
+										   
 									   
 									 
 										
@@ -2022,6 +2089,8 @@ function delete_class(){
 										//var img =document.getElementById("add_alert_info");
 										var back = document.getElementById("back");	
 										//input.value = "";
+										$("#invite").hide();
+										$("#gif").hide();
 										$("#alert_msg").hide();
 										$("#alertmess").hide();
 										$("#alert_title").show();
@@ -2678,7 +2747,8 @@ toggleSlider();
 
 if(messageObj.return_code(new_class_token)){
 var p_class_code = messageObj.get_code(new_class_token);	
-destroy_class(p_class_code);}
+destroy_class(p_class_code);
+}
 document.getElementById("subscriber-count-container1").style.display = "block";
 for (var k = 0 ;k<document.getElementsByClassName("class-list-name").length; k++)
 document.getElementsByClassName("class-list-name")[k].style.background = "";
@@ -2697,12 +2767,12 @@ document.getElementsByClassName("class-list-name")[k].style.background = "";
 								ele.addEventListener("click", function(){select_class(this.id)}, false);
 								has_class.appendChild(ele);
 							
-								
+								alert("1");
                                 
 								
 									}
 
-
+alert("2");
 document.getElementById(new_class_token).style.background = "#1C87A0";
 destroy_suscriber();
 query_code_name(new_class_token);
@@ -2736,7 +2806,8 @@ document.getElementById("subscriber-count-container1").style.display = "block";
 document.getElementById(new_class_token).style.background = "#1C87A0";
 
 console.log(messageObj.get_name());
-document.getElementById("classname").innerHTML = messageObj.get_name();
+
+
 console.log(messageObj.get_name());
 
 query_code_name(new_class_token);
@@ -3018,7 +3089,8 @@ function view_profile(){
 										//input.style.display ="none";
 										//back.style.display = "none";										
 										//console.log(document.getElementById("alert_title").style.display);
-										
+										$("#invite").hide();
+										$("#gif").hide();
 										$("#alertmess").hide();
 										$("#uplme").hide();
 										$("#alert_title_text").hide();
@@ -3149,6 +3221,7 @@ $("#next").show();
 $("#next").html("CONFIRM");
 $("#back").html("CANCEL");
 $("#alert_title").show();
+$("#alert_title").css('background-color', 'transparent');
 $("#alert_title_text").show();
 $("#alert_title_text").html("Change Profile Pic");
 document.getElementById("next").setAttribute("onclick","changp()");
@@ -3286,12 +3359,24 @@ $("#EditSach").click();
 }
 
 function show_sidebar(){
-//var sidebar = document.getElementsByClassName("page-left-container");
-//sidebar.style.display = "block";	
-$(".page-left-container").show();
+
+if(document.getElementById("sidebar").style.display == "block" ){
+
+	if($('.page-left-container').hasClass('active'))
+{
+    $('.page-left-container').css('left', '-70%');
+	$('.page-left-container').removeClass('active');
+} 
+else
+{
+    $('.page-left-container').css('left', '0%');
+	$('.page-left-container').addClass('active');
+}
+	
+
 }	
 
-
+}
 
 		
 } 
