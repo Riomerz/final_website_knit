@@ -2844,6 +2844,19 @@ function send(){
 										input.style.display ="none";
 										back.style.display = "none";
 										
+										$("#alert_msg").hide();
+										$("#alertmess").hide();
+										$("#alert_title").show();
+										$("#alert_title_text").show();
+										$("#alert_profile_pic").hide();
+										$("#add_alert_info").hide();
+										$("#alert_profile").hide();
+										$("#alert_details").show();
+										$("#uplme").hide();
+										$("#invite").hide();
+										$("#gif").hide();
+										$("#enter_class_name").hide();
+										
 										$("#next").hide();
 										$("#back").hide();
 										$("#btn").show();
@@ -2970,6 +2983,22 @@ if ('files' in x) {
 										input.style.display ="none";
 										back.style.display = "none";
 										
+										$("#alert_msg").hide();
+										$("#alertmess").hide();
+										$("#alert_title").show();
+										$("#alert_title_text").show();
+										$("#alert_profile_pic").hide();
+										$("#add_alert_info").hide();
+										$("#alert_profile").hide();
+										$("#alert_details").show();
+										$("#uplme").hide();
+										$("#invite").hide();
+										$("#gif").hide();
+										$("#enter_class_name").hide();
+										
+										
+										
+										
 										$("#next").hide();
 										$("#back").hide();
 										$("#btn").show();
@@ -2998,7 +3027,20 @@ if ('files' in x) {
 										img.style.display="block";
 										input.style.display ="none";
 										back.style.display = "none";
-																				
+										
+										$("#alert_msg").hide();
+										$("#alertmess").hide();
+										$("#alert_title").show();
+										$("#alert_title_text").show();
+										$("#alert_profile_pic").hide();
+										$("#add_alert_info").hide();
+										$("#alert_profile").hide();
+										$("#alert_details").show();
+										$("#uplme").hide();
+										$("#invite").hide();
+										$("#gif").hide();
+										$("#enter_class_name").hide();
+										
 										$("#next").hide();
 										$("#back").hide();
 										$("#btn").show();
