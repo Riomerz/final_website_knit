@@ -157,7 +157,7 @@ float:right;
 								<div id="via-email" class="home-reg-content">
 								<div class="input-group">
 								<label style="margin-left: 12.5%;">Enter emails separated by comma.</label>
-								<textarea ng-model="invitations.recipients" name="emails-numbers" id="invite-parents-emails" rows="6" placeholder="example@example.com, another@example.com" ng-if="!group.subscribe.sms" style=""></textarea>
+								<textarea ng-model="invitations.recipients" name="emails-numbers" id="invite-parents-emails" rows="6" placeholder="example@xyz.com, another@xyz.com" ng-if="!group.subscribe.sms" style=""></textarea>
 								<button class="send_btn" onclick="send_email()">Send Invitation</button></a>
 								
 								</div>
@@ -171,7 +171,7 @@ float:right;
 									
 									</div>
 								</div>
-								<p style="font-family: Lato-regular;margin-bottom:0px;color:green" id="success_alert"></p>
+								<p style="font-family: Lato-regular;margin-bottom:0px;text-align:center" id="success_alert"></p>
 								<div id="msgs_invite">Recommended</div>
 								<div id="download_button" onclick="mail()">Recieve instructions on Email</div>
 								<div id="parents_see" onclick="show_gif()">How parents will see...???</div>
@@ -185,6 +185,7 @@ float:right;
 							
 							
 			<div id="alert_details"></div>
+			<div id="invite_link"></div>
 			<div id="alert_profile_pic"><p style="text-align:center;font-family:Gotham-Light;font-size:30px;margin-bottom:10%">Your Profile</p><img id="profile_pic_img_pp" src="" />
 					</div>
 			<div id="alert_profile">
@@ -206,7 +207,7 @@ float:right;
 			<p style="float:left;margin-left:6%;font-family: Lato-regular;margin-bottom:0px"class="number-alerts" id="alert_msg"></p>
 			<input class="input-alert"id="enter_class_name" type="text" placeholder="Class Name"style=" font: 20px lato;border:1px solid #999999;font-family:Lato-regular"  size ="26"name="new_c_name">
 			
-			<!--center id="alertmess"></center-->
+			<center id="alertmess"></center>
 			 <div id="uplme">
 			 
                     <center >
@@ -239,9 +240,9 @@ float:right;
     -o-box-shadow: 0 0 8px rgba(0,0,0,0.3);">
 		<nav class="navbar">
 		  <div class="container-fluid">
-		  <button type="button" class="btn btn-default btn-lg" style="float:left" id="sidebar">
+		  <div style="float:left" id="sidebar">
 			  <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-			</button>
+			</div>
 			
 			    <!--a href="#" class="toggle-nav btn btn-lg btn-success" id="sidebar"><i class="fa fa-bars"></i></a-->
 			
@@ -334,7 +335,7 @@ float:right;
 							<!--<a class="image-popup-no-margins" onclick="show_this(this)">
 							<img   id="load-feed-image" src="icons/logo.png">
 							</a>-->
-						<a  href="#" class="showPopup" ><img onclick="show_img(this)" id="load-feed-image" src="icons/logo.png" style="max-width:100%;height:auto"/></a>
+						<a class="showPopup" ><img id="load-feed-image" src="icons/logo.png" style="max-width:100%;height:auto"/></a>
 							 
 						</div>
 						<div class="feed-actions">
@@ -516,23 +517,28 @@ $("#Sach").replaceWith(cc2);
 z=0;
  var currentUser = Parse.User.current();
 if(y2!=""){
-currentUser.set("name", y2); 
-currentUser.save(null, {
-  success: function(currentUser) {
+
+//currentUser.set("name", y2); 
+//currentUser.save(null, {
+Parse.Cloud.run('updateProfileName', {name: y2},{
+  success: function(flag) {
 if(y2!=""){
 $("#Sach").text(y2);
 currentUser.fetch();
 document.getElementById("profile_name").innerHTML = y2+"<br>"+display_name[0];
 document.getElementById("teacher_name").innerHTML = y2;
+document.getElementById("profilename").innerHTML = y2;
 document.getElementById("cc2").className="glyphicon glyphicon-pencil";
  $("#alertmess").text("Your profile name has been edited");
 $("#sentnotif").show();
 window.setTimeout('$("#sentnotif").hide();', 5000);
 }
   },
-  error: function(currentUser, error) {
+  error: function(flag, error) {
   }
 });
+
+
 }
 else{
 $("#Sach").text(currentUser.get("name"));

@@ -263,6 +263,29 @@ width:17%;
 #sidebar{
 display:none;
 }
+#sidebar{
+    float: none;
+    cursor: pointer;
+	    margin-top: 4%;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 11px #666666;
+  -moz-box-shadow: 0px 0px 11px #666666;
+  box-shadow: 0px 0px 11px #666666;
+  font-family: initial;
+  color: #ffffff;
+  font-size: 20px;
+  background: rgb(3, 155, 229);
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  
+  text-align:center;
+}
+#sidebar:hover {
+  background: rgb(0, 134, 139);
+  text-decoration: none;
+}
 
 
 
@@ -523,6 +546,8 @@ margin-left:5%;
 background-color:#f8f8f8;
 }
 
+
+
 #enter_class_name{
 width:83%;
 }
@@ -619,6 +644,10 @@ color:white;
   margin-left: 30%;
   background-color: #f8f8f8;
 }
+
+
+
+
 	
 	#dd{
 	display: inherit;
@@ -629,6 +658,31 @@ color:white;
  /* border: 1px solid #E0E0E0;*/
  border: 1px solid black;
   color: white;
+}
+
+#invite_link {
+    float: none;
+    cursor: pointer;
+    margin-left: 30%;
+    margin-right: 30%;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 11px #666666;
+  -moz-box-shadow: 0px 0px 11px #666666;
+  box-shadow: 0px 0px 11px #666666;
+  font-family: initial;
+  color: #ffffff;
+  font-size: 20px;
+  background: rgb(3, 155, 229);
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  margin-top:3%;
+  text-align:center;
+}
+#invite_link:hover {
+  background: rgb(0, 134, 139);
+  text-decoration: none;
 }
 
 #showmore{
@@ -964,7 +1018,7 @@ margin-left:35px;
 #subscriber-list{
 overflow-x: hidden;
 overflow-y: auto;
-height:75%;
+height:75.5%;
 
 
 

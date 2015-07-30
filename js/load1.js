@@ -9,7 +9,7 @@ if (currentUser) {
 	display_name = display_name.split(" ");
 	//var pic  = currentUser.get("pid").url();
 	
-	//var class_names_exits = [];
+	var class_names_exits = [];
     var teachername = currentUser.get("name");
 	if(typeof currentUser.get("email") != 'undefined'){
 	var user_email = currentUser.get("email");
@@ -118,8 +118,11 @@ else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < (verOffset=nAgt.lastIndexOf('/'
 	separate_date();
 	dateObj = new separate_date();	
     messageObj = new generate_new_message();
-    showmyclasses();	
+    	
 	giveClassesDetails();
+	showmyclasses();
+
+		
 	$('#page-container').on('click',function(){
 		 if ($("#dropdown").is(":visible")) {
 		  $("#dropdown").animate(
@@ -146,10 +149,10 @@ else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < (verOffset=nAgt.lastIndexOf('/'
 	});
 
 
+	}
 	
 	
-	
-function showmyclasses(){
+function showmyclasses(){/*
  //var currentUser = Parse.User.current();
 var array=currentUser.get("Created_groups");
 if(array){
@@ -191,18 +194,11 @@ $("#cod").insertAfter($("#class_room"));
 }
 }
 new_class_token = cod;
+*/
 
-$("#class-list > div").click(function(event) {
-    console.log($(this).html());
-	document.getElementById("classname").innerHTML = $(this).html();
-	document.getElementById("invite_class").innerHTML = $(this).html();
-		})
+
 	
-}
-	
-	
-	
-	
+
 								
 								
 								Parse.Session.current().then(function(result){
@@ -239,7 +235,7 @@ $("#class-list > div").click(function(event) {
 										
 	
 	}
-		
+
 		
 function mail(){
 	Parse.Cloud.run('mailPdf',{email:user_email, name:teachername},{
@@ -253,9 +249,14 @@ function mail(){
 	
 }		
 
-function invite_parent(){
-	toggleSlider();
-		
+function invite_parent(){				if( document.getElementById("alerts").style.display == "")
+										{	
+											toggleSlider();
+										}
+										else if(document.getElementById("alerts").style.display == "none"){
+											toggleSlider();
+										}
+										
 											var modal_class=  document.getElementById("alerts");
 										modal_class.addEventListener("click", function(){hide_alert()}, false);
 	
@@ -272,6 +273,7 @@ function invite_parent(){
 										$("#back").hide();
 										$("#gif").hide();
 										$("#invite").show();
+										$("#invite_link").hide();
 
 									
 		
@@ -512,6 +514,7 @@ $('#msgs_invite_2').show();
 $('#text').show();	
 $('#send_intsruction_button_2').show();
 $('#mob').show();
+$("#invite_link").hide();
 
 $('#pop_img').remove();
 $('#pop_img1').remove();	
@@ -650,7 +653,7 @@ function close_invite(){
 	toggleSlider();	
 }
 
-
+/*
 function show_img(ele){
 var url_img = ele.src;
 toggleSlider();
@@ -729,7 +732,8 @@ modal_class.appendChild(img_container);
 		toggleSlider();
 		
 	}
-function settings(){
+*/
+	function settings(){
 	
 											toggleSlider();
 											var modal_class=  document.getElementById("alerts");
@@ -757,6 +761,7 @@ function settings(){
 										$("#enter_class_name").show();
 										$("#next").show();
 										$("#next").removeAttr('style');
+										$("#invite_link").hide();
 
 										img.src="icons/info.png";
 										img.style.display="block";
@@ -895,42 +900,7 @@ function toggleSlider() {
     }   
 }
 
-/*function toggleSidebar() {
-	
-    if ($(".page-left-container").is(":visible")){ 
-        $(".page-left-container").animate(
-		 
-            {
-                opacity: "0"
-            },
-            10,
-			function(){
-				$(".page-left-container").slideUp(0);
-                $(".page-left-container").fadeOut(100);
-				
-            }
 
-           
-           
-        );
-    }
-    else {
-      $(".page-left-container").fadeIn(10, function(){
-			
-            $(".page-left-container").animate(
-                {
-                    opacity: "1"
-                },
-                100
-            );
-			$(".page-left-container").slideDown(200);
-        });
-	
-	
-	
-    }   
-}
-*/
 
 function dates(){
 	var lastdate = new Date(datei);
@@ -964,7 +934,9 @@ Parse.Cloud.run('giveClassesDetails ',{},{
 								ele.setAttribute("class","class-list-name");
 								ele.innerHTML=results[i].get('name');
 								ele.addEventListener("click", function(){select_class(this.id)}, false);
+								ele.setAttribute("onclick", "new_class_token = this.id; start()");
 								has_class.appendChild(ele);
+
 						
                                 
 								
@@ -975,7 +947,12 @@ Parse.Cloud.run('giveClassesDetails ',{},{
 				}
 				}
 				
-				
+					
+	$("#class-list > div").click(function(event) {
+    console.log($(this).html());
+	document.getElementById("classname").innerHTML = $(this).html();
+	document.getElementById("invite_class").innerHTML = $(this).html();
+		})
 				
 				},
 		error: function(error){
@@ -1572,6 +1549,12 @@ function check_name(){
  create();
  
 }
+
+function invite_parent_link(){
+	on_create_load_invite();
+	invite_parent();	
+}
+
 /*To create a new Class*/
 function create_class(){				$("#alert_title").show();
 										toggleSlider();
@@ -1595,10 +1578,14 @@ function create_class(){				$("#alert_title").show();
 										$("#alert_details").show();
 										$("#uplme").hide();
 										$("#btn").hide();
+										$("#invite_link").hide();
+										
 										
 										//$("#alert_title").show();
 										$("#enter_class_name").show();
 										$("#next").removeAttr('style');
+										
+										
 										//input.value = "";
 										//img.src="icons/add_class.png";
 										//img.style.display="none";
@@ -1620,7 +1607,7 @@ function create_class(){				$("#alert_title").show();
 		function create(){		
 							if(!new_class_name){
 										$("#alert_msg").show();
-										$("#btn").show();
+										//$("#btn").show();
 										document.getElementById('alert_msg').innerHTML = "*Enter a class name";
 										setTimeout(function(){$('#alert_msg').hide();},3000);
 										//var modal_class=  document.getElementById("alerts");
@@ -1693,11 +1680,19 @@ if((typeof currentUser.get("Created_groups") == 'undefined') || c == my_class_na
 										next.style.width = "100%";
 										document.getElementById("alert_title_text").innerHTML ="SUCCESS";
 										document.getElementById("alert_title").style.background = "#039BE5";
-									    msg.innerHTML = "<center>Your class "+class_name+" has been created with code<br><strong><h3> "+class_token+"</h3></strong><br> Share the above code with your students to start sending mesage to them</center>";
+										document.getElementById("invite_link").innerHTML = "INVITE PARENTS";
+										invite_link.setAttribute("onclick","invite_parent_link()");
+										/*var details = document.getElementById("alert_details");
+										var invite_link =  document.createElement("div");
+										invite_link.setAttribute("id","invite_link");
+										invite_link.innerHTML = "INVITE PARENTS";
+										details.appendChild("invite_link");	*/
+										$("#invite_link").show();
+										msg.innerHTML = "<center>Your class "+class_name+" has been created with code<br><strong><h3> "+class_token+"</h3></strong><br> Share the above code with your students to start sending mesage to them</center>";
 										next.innerHTML ="OK";
-										back.innerHTML ="CANCEL";
+										//back.innerHTML ="INVITE PARENTS";
 										next.setAttribute("onclick","on_create_load()");
-										back.setAttribute("onclick","toggleSlider()"); 
+										//back.setAttribute("onclick","invite_parent()"); 
 										
 						
 				
@@ -1715,6 +1710,7 @@ if((typeof currentUser.get("Created_groups") == 'undefined') || c == my_class_na
 										$("#btn").show();
 										$("#btn").html("OK");
 										$("#btn").click(toggleSlider);
+										$("#invite_link").hide();
 										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
@@ -1744,6 +1740,7 @@ else{
 										$("#back").hide();
 										$("#btn").show();
 										$("#btn").html("OK");
+										$("#invite_link").hide();
 										input.value = "";
 										img.src="icons/error.png";
 										img.style.display="block";
@@ -1786,6 +1783,7 @@ function create_again(){
 										//$("#alert_title").show();
 										$("#enter_class_name").show();
 										$("#next").removeAttr('style');
+										$("#invite_link").hide();
 										//$("#next").removeAttr('style');
 										//input.value = "";
 										//img.src="icons/add_class.png";
@@ -2104,6 +2102,7 @@ function delete_class(){
 										$("#enter_class_name").hide();
 										$("#next").show();
 										$("#next").removeAttr('style');
+										$("#invite_link").hide();
 										//img.src="icons/error.png";
 										//img.style.display="block";
 										//input.style.display ="none";
@@ -2740,6 +2739,7 @@ function generate_new_message(){
 	
 function on_create_load()
 {
+	
 toggleSlider();
 
 //console.log(messageObj.return_code(new_class_token));
@@ -2767,12 +2767,71 @@ document.getElementsByClassName("class-list-name")[k].style.background = "";
 								ele.addEventListener("click", function(){select_class(this.id)}, false);
 								has_class.appendChild(ele);
 							
-								alert("1");
+								//alert("1");
                                 
 								
 									}
 
-alert("2");
+//alert("2");
+document.getElementById(new_class_token).style.background = "#1C87A0";
+destroy_suscriber();
+query_code_name(new_class_token);
+document.getElementById("display_code").innerHTML="Class-code";	
+			document.getElementById("box-content").innerHTML=new_class_token;
+			//document.getElementsByClassName('copy-tag')[0].innerHTML="Click to copy";
+		  document.getElementById("subscriber-count").innerHTML="0";
+		  
+
+		document.getElementById( "showmore" ).setAttribute( "onclick", "show_each_old()" );
+        destroy_message();
+		class_message(new_class_token);
+		messageObj.return_code(new_class_token);
+
+$("#class-list > div").click(function(event) {
+    console.log($(this).html());
+	document.getElementById("classname").innerHTML = $(this).html();
+	document.getElementById("invite_class").innerHTML = $(this).html();
+		})
+					
+		
+	
+						
+	}
+	
+	
+
+function on_create_load_invite(){
+	
+	
+if(messageObj.return_code(new_class_token)){
+var p_class_code = messageObj.get_code(new_class_token);	
+destroy_class(p_class_code);
+}
+document.getElementById("subscriber-count-container1").style.display = "block";
+for (var k = 0 ;k<document.getElementsByClassName("class-list-name").length; k++)
+document.getElementsByClassName("class-list-name")[k].style.background = "";
+
+	        my_class_names.push(new_class_name);
+			
+				var has_class = document.getElementById('class-list');
+							
+							if(!document.getElementById(new_class_token))
+									{
+								
+								var ele = document.createElement("div");
+								ele.setAttribute("id",new_class_token);
+								ele.setAttribute("class","class-list-name");
+								ele.innerHTML=new_class_name;
+								$("#classname").html(new_class_name);
+								ele.addEventListener("click", function(){select_class(this.id)}, false);
+								has_class.appendChild(ele);
+							
+								//alert("1");
+                                
+								
+									}
+
+//alert("2");
 document.getElementById(new_class_token).style.background = "#1C87A0";
 destroy_suscriber();
 query_code_name(new_class_token);
@@ -2787,7 +2846,11 @@ document.getElementById("display_code").innerHTML="Class-code";
 		class_message(new_class_token);
 		messageObj.return_code(new_class_token);	
 		
-	
+	$("#class-list > div").click(function(event) {
+    console.log($(this).html());
+	document.getElementById("classname").innerHTML = $(this).html();
+	document.getElementById("invite_class").innerHTML = $(this).html();
+		})
 						
 	}
 	
@@ -2805,15 +2868,11 @@ document.getElementById("subscriber-count-container1").style.display = "block";
 
 document.getElementById(new_class_token).style.background = "#1C87A0";
 
-console.log(messageObj.get_name());
-
-
-console.log(messageObj.get_name());
 
 query_code_name(new_class_token);
 document.getElementById("display_code").innerHTML="Class-code";	
 			document.getElementById("box-content").innerHTML=new_class_token;
-			document.getElementsByClassName('copy-tag')[0].innerHTML="Click to copy";
+			//document.getElementsByClassName('copy-tag')[0].innerHTML="Click to copy";
 		  document.getElementById("subscriber-count").innerHTML="0";
 
 		//document.getElementById( "showmore" ).setAttribute( "onclick", "show_each_old()" );
@@ -2856,6 +2915,7 @@ function send(){
 										$("#invite").hide();
 										$("#gif").hide();
 										$("#enter_class_name").hide();
+										$("#invite_link").hide();
 										
 										$("#next").hide();
 										$("#back").hide();
@@ -2912,6 +2972,7 @@ function send(){
 										$("#invite").hide();
 										$("#gif").hide();
 										$("#enter_class_name").hide();
+										$("#invite_link").hide();
 										
 										$("#next").hide();
 										$("#back").hide();
@@ -3008,6 +3069,7 @@ if ('files' in x) {
 										$("#invite").hide();
 										$("#gif").hide();
 										$("#enter_class_name").hide();
+										$("#invite_link").hide();
 										
 										
 										
@@ -3159,10 +3221,12 @@ function view_profile(){
 										$("#enter_class_name").hide();
 										$("#add_alert_info").hide();
 										$("#alert_title").hide();
+										$("#invite_link").hide();
 										
 										$("#back").hide();
 										$("#next").hide();
 										$("#alert_details").hide();
+										
 										//document.getElementById("alert_title_text").innerHTML ="SUCCESS";
 										
 									    //msg.innerHTML ="";
@@ -3273,6 +3337,7 @@ $("#alert_details").hide();
 $("#uplme").show();
 $("#back").show();
 $("#next").show();
+$("#next").removeAttr('style');
 $("#next").html("CONFIRM");
 $("#back").html("CANCEL");
 $("#alert_title").show();
@@ -3304,7 +3369,7 @@ if((name2.indexOf("jpg") > -1)||(name2.indexOf("png") > -1)||(name2.indexOf("jpe
 var fors=document.getElementById('next');
 //fors.disabled=true;
 document.getElementById('att2').disabled=true;
-fors.innerHTML="uploading image";
+fors.innerHTML="uploading image....";
 name2=name2.replace(/[^a-z0-9\_\.\-]/ig,"");
  parseFile2 = new Parse.File(name2, file);
 parseFile2.save().then(function() {
@@ -3355,15 +3420,17 @@ $("#pickr1").show();
 //$('#modalpic').modal('hide');
 }
 function changp(){
-	console.log("changp");
+	
  var currentUser = Parse.User.current();
 if(picat==1){
 $("#loading").show();
-currentUser.set("pid", parseFile2); 
 
-currentUser.save(null, {
-  success: function(currentUser) {
-
+//currentUser.set("pid", parseFile2); 
+//Parse.Cloud.run('deleteClass', {pid: parseFile2},
+//currentUser.save(null, {
+Parse.Cloud.run('updateProfilePic', {pid: parseFile2},{
+  success: function(flag) {
+console.log("changp");
 $("#pickr").show();
 $("#pickr1").show();
 $("#att2").val("");
@@ -3371,6 +3438,7 @@ document.getElementById('profile_pic_img').src=parseFile2.url();
 document.getElementById('profile_pic_img_dd').src=parseFile2.url();
 document.getElementById('profile_pic_img_pp').src=parseFile2.url();
 $("#loading").hide();
+/*
 var nameofcreator=currentUser.get('name');
 Parse.Cloud.run('cloudpic', { pfile: parseFile2 ,name:nameofcreator}, {
   success: function(rat) {
@@ -3380,21 +3448,25 @@ alert(rat);
 alert(error.code+'no'+error.message);
   }
 });
+*/
 $("#alertmess").show();
 $("#alertmess").html("Your Profile pic changed");
 //$("#sentnotif").show();
 $("#uplme").hide();
-$("#alert_title_text").hide();
+$("#alert_title_text").show();
+$("#alert_title_text").html("Change Profile Pic");
 $("#next").html("OK");
 document.getElementById("next").setAttribute("onclick","toggleSlider()");
 document.getElementById("back").setAttribute("onclick","toggleSlider()");
 
 window.setTimeout('$("#sentnotif").hide();', 5000);
   },
-  error: function(currentUser, error) {
+  error: function(flag, error) {
 alert(error.code);
   }
 });
+
+
 }
 else{
  $("#uplerr").text("please Attach image");
