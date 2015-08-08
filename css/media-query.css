@@ -51,7 +51,22 @@
   display: block;
   text-align:center;
   }
+  
+   .choose-type.inactive {
+  display: block;
+  text-align:center;
+  }
 
+    .choose-type.active_invite {
+  display: inline-block;
+  text-align:center;
+  }
+  
+   .choose-type.inactive_invite {
+  display: inline-block;
+  text-align:center;
+  }
+  
 #teacher{
 	float: none;
 	display: block;
@@ -139,11 +154,11 @@ ul#featured-gallery{
 
 
 #login .input-group input.mobile-input {
-  width: 75%;
+  width: 85%;
   }
 
 .reg-form{
-	top: 40px;
+/*	top: 40px;*/
 	position: relative;
 }
 
@@ -195,7 +210,7 @@ margin-left:9%;
 }
 
 #alert_details .mobile-input {
-  width: 290px;
+  width: 100%;
   }
 /*----How it Works---*/
 
